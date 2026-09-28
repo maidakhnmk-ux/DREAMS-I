@@ -1,0 +1,2288 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bahawalpur Integrated Solid Waste Management | DREAMS-I UC-14 Case Study</title>
+  <meta name="description" content="A comprehensive development case study on the Bahawalpur Integrated Solid Waste Management and UC-14 Two-Bin Segregation Initiative under DREAMS-I (ADB, UNICEF, BWMC, Government of Punjab).">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              950: '#051329',
+              900: '#0B2545',
+              800: '#13315C',
+              700: '#1D4E89',
+              600: '#0284C7',
+              500: '#0EA5E9',
+              100: '#E0F2FE',
+              50: '#F0F9FF'
+            },
+            eco: {
+              green: '#10B981',
+              greenDark: '#059669',
+              greenLight: '#D1FAE5',
+              blue: '#2563EB',
+              blueDark: '#1D4ED8',
+              blueLight: '#DBEAFE'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Newsreader"', 'Georgia', 'serif'],
+            urdu: ['"Noto Nastaliq Urdu"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Vendor CSS & Custom Styles -->
+  <link rel="stylesheet" href="assets/vendor/leaflet.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Universal Auto-Fallback Script for Local File Paths -->
+  <script>
+    document.addEventListener('error', function(e) {
+      if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) {
+        const src = e.target.getAttribute('src');
+        if (src && !src.startsWith('http') && !src.startsWith('data:') && !e.target.dataset.triedFallback) {
+          e.target.dataset.triedFallback = 'true';
+          const fileName = src.split('/').pop();
+          if (src.includes('/')) {
+            e.target.src = fileName;
+          } else {
+            if (fileName.startsWith('logo-')) {
+              e.target.src = 'assets/images/logos/' + fileName;
+            } else if (fileName.endsWith('.mp4')) {
+              e.target.src = 'assets/videos/' + fileName;
+            } else {
+              e.target.src = 'assets/images/' + fileName;
+            }
+          }
+        }
+      }
+    }, true);
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-sky-100 selection:text-sky-900">
+
+  <!-- Top Institutional Bar -->
+  <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800 no-print">
+    <div class="content-container flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-medium tracking-wide">Government of the Punjab &bull; Asian Development Bank (Loan 4396-PAK) &bull; UNICEF &bull; BWMC</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <span class="hidden md:inline">Project Showcase & Development Sector Case Study</span>
+        <button id="export-briefing-btn" class="hover:text-white transition flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded text-[11px] font-medium border border-slate-700">
+          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          Print / Executive Brief
+        </button>
+        <button id="presentation-mode-btn" class="hover:text-white transition flex items-center gap-1.5 bg-sky-900 hover:bg-sky-800 text-sky-200 px-2.5 py-1 rounded text-[11px] font-medium border border-sky-700">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path></svg>
+          Presentation Slide Mode
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Brand & Partner Identity Header (Tier 1: Unshrinkable, Spacious, No Collisions) -->
+  <div class="bg-white border-b border-slate-200 py-3.5 px-4 no-print shadow-xs">
+    <div class="content-container flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Project Identity Lockup -->
+      <a href="#home" class="flex items-center gap-3.5 shrink-0 group">
+        <div class="flex items-center gap-2.5 shrink-0">
+          <img src="assets/images/logos/logo-punjab.png" alt="Government of the Punjab" class="h-11 w-auto object-contain">
+          <img src="assets/images/logos/logo-dreams.png" alt="DREAMS-I" class="h-11 w-auto object-contain">
+        </div>
+        <div class="border-l-2 border-slate-200 pl-3.5 shrink-0">
+          <div class="text-sm sm:text-base font-extrabold tracking-tight text-brand-950 uppercase font-sans">
+            DREAMS-I &bull; Bahawalpur ISWM
+          </div>
+          <div class="text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            UC-14 Two-Bin Segregation Showcase
+          </div>
+        </div>
+      </a>
+
+      <!-- Key Partners Lockup (Dedicated Box for ADB, UNICEF, BWMC) -->
+      <div class="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200 px-4 py-1.5 rounded-xl shrink-0">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 border-r border-slate-200 pr-3">
+          Key Partners
+        </span>
+        <div class="flex items-center gap-3.5">
+          <img src="assets/images/logos/logo-adb.jpeg" alt="Asian Development Bank" class="h-7 w-auto object-contain rounded" title="Asian Development Bank (Loan 4396-PAK)">
+          <img src="assets/images/logos/logo-unicef.png" alt="UNICEF" class="h-6 w-auto object-contain" title="UNICEF Pakistan">
+          <img src="assets/images/logos/logo-bwmc.png" alt="Bahawalpur Waste Management Company" class="h-8 w-auto object-contain" title="Bahawalpur Waste Management Company">
+        </div>
+      </div>
+
+      <!-- Quick Action / Drawer Button -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="mobile-nav-toggle" class="p-2 px-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 flex items-center gap-1.5 text-xs font-semibold" aria-label="Open Directory">
+          <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <span>All 18 Chapters</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sticky Chapter Navigation Ribbon (Tier 2: Scrollable, Never Collides) -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm no-print">
+    <div class="content-container">
+      <div class="flex items-center justify-between h-12">
+        
+        <!-- Horizontally Scrollable Chapter Links -->
+        <nav class="flex items-center gap-1 sm:gap-2 text-xs font-semibold text-slate-600 overflow-x-auto no-scrollbar py-1 w-full">
+          <a href="#home" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Home</a>
+          <a href="#about" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">About DREAMS-I</a>
+          <a href="#partnerships" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Partnerships</a>
+          <a href="#timeline" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Timeline</a>
+          <a href="#sbcc" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">SBCC Model</a>
+          <a href="#inclusive" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Inclusion</a>
+          <a href="#two-bin" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Two-Bin System</a>
+          <a href="#uc14" class="nav-link py-1.5 px-3 bg-emerald-600 text-white rounded-md font-bold hover:bg-emerald-700 transition whitespace-nowrap shadow-xs flex items-center gap-1">
+            <span>â­ UC-14 Case Study</span>
+          </a>
+          <a href="#workers" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Workers</a>
+          <a href="#administration" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Governance</a>
+          <a href="#impact" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Impact</a>
+          <a href="#map" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">GIS Map</a>
+          <a href="#gallery" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Gallery</a>
+          <a href="#video" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Videos</a>
+          <a href="#resources" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Library</a>
+          <a href="#replication" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Replication</a>
+          <a href="#lessons" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Lessons</a>
+        </nav>
+
+      </div>
+    </div>
+
+    <!-- Scroll Progress Indicator Bar -->
+    <div class="w-full bg-slate-100 h-1">
+      <div id="scroll-progress-fill" class="h-1 bg-gradient-to-r from-sky-600 via-emerald-500 to-sky-700 w-0 transition-all duration-150"></div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="nav-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden no-print"></div>
+  <aside id="mobile-nav-drawer" class="fixed top-0 right-0 bottom-0 w-80 max-w-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 flex flex-col justify-between overflow-y-auto no-print">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="font-extrabold text-sm text-brand-900 tracking-wider">INITIATIVE DIRECTORY</div>
+        <button id="close-drawer-btn" class="p-2 text-slate-400 hover:text-slate-700" aria-label="Close menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <nav class="mt-4 flex flex-col gap-1 text-sm font-semibold text-slate-700">
+        <a href="#home" class="nav-jump-link p-2 rounded hover:bg-slate-100">1. Home & Pathways</a>
+        <a href="#about" class="nav-jump-link p-2 rounded hover:bg-slate-100">2. About DREAMS-I ISWM</a>
+        <a href="#partnerships" class="nav-jump-link p-2 rounded hover:bg-slate-100">3. Multi-Partner Ecosystem</a>
+        <a href="#timeline" class="nav-jump-link p-2 rounded hover:bg-slate-100">4. Interactive Journey Timeline</a>
+        <a href="#sbcc" class="nav-jump-link p-2 rounded hover:bg-slate-100">5. SBCC Campaign Model</a>
+        <a href="#inclusive" class="nav-jump-link p-2 rounded hover:bg-slate-100">6. Inclusive Engagement</a>
+        <a href="#two-bin" class="nav-jump-link p-2 rounded hover:bg-slate-100">7. Two-Bin System & Simulator</a>
+        <a href="#uc14" class="nav-jump-link p-2 rounded bg-emerald-50 text-emerald-800 font-bold hover:bg-emerald-100">8. UC-14 Case Study (Flagship)</a>
+        <a href="#workers" class="nav-jump-link p-2 rounded hover:bg-slate-100">9. Workers as Change Agents</a>
+        <a href="#administration" class="nav-jump-link p-2 rounded hover:bg-slate-100">10. Institutional Engagement</a>
+        <a href="#impact" class="nav-jump-link p-2 rounded hover:bg-slate-100">11. Evidence & Impact Dashboard</a>
+        <a href="#map" class="nav-jump-link p-2 rounded hover:bg-slate-100">12. Interactive GIS Beat Map</a>
+        <a href="#gallery" class="nav-jump-link p-2 rounded hover:bg-slate-100">13. Documented Field Gallery</a>
+        <a href="#video" class="nav-jump-link p-2 rounded hover:bg-slate-100">14. Documentary & Media Clips</a>
+        <a href="#resources" class="nav-jump-link p-2 rounded hover:bg-slate-100">15. Knowledge & Document Library</a>
+        <a href="#replication" class="nav-jump-link p-2 rounded hover:bg-slate-100">16. Provincial Scale-up & CM Directive</a>
+        <a href="#lessons" class="nav-jump-link p-2 rounded hover:bg-slate-100">17. Field Lessons Learned</a>
+        <a href="#closing" class="nav-jump-link p-2 rounded hover:bg-slate-100">18. Closing Synthesis</a>
+      </nav>
+    </div>
+    
+    <div class="pt-6 border-t border-slate-100 text-xs text-slate-500">
+      <p class="font-medium text-slate-700">DREAMS-I ISWM Project</p>
+      <p>Asian Development Bank (Loan 4396-PAK) &bull; UNICEF &bull; BWMC</p>
+    </div>
+  </aside>
+
+  <!-- Presentation Mode Overlay Modal (Conference/Donor slides) -->
+  <div id="presentation-overlay" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-6 relative border border-slate-700">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+        <div class="flex items-center gap-3">
+          <span class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-1 rounded">Executive Slide Deck Mode</span>
+          <span id="slide-indicator" class="text-xs text-slate-500 font-medium">Section 1 of 18</span>
+        </div>
+        <button id="exit-presentation-btn" class="text-slate-400 hover:text-slate-800 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="py-6 text-center">
+        <p class="text-sm text-slate-600 mb-6">Use your keyboard <kbd class="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs">&rarr;</kbd> and <kbd class="px-2 py-1 bg-slate-100 border border-slate-300 rounded text-xs">&larr;</kbd> or the navigation buttons below to step smoothly through all 18 evidence-based chapters during briefings for ADB, UNICEF, government dignitaries, and technical partners.</p>
+        <div class="flex justify-center gap-4">
+          <button id="slide-prev-btn" class="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 flex items-center gap-2 text-sm">
+            &larr; Previous Chapter
+          </button>
+          <button id="slide-next-btn" class="px-5 py-2.5 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 flex items-center gap-2 text-sm shadow">
+            Next Chapter &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ========================================================= -->
+    <!-- 1. HOME SECTION: HERO, MILESTONES & VISUAL PATHWAY        -->
+    <!-- ========================================================= -->
+    <section id="home" data-slide="true" class="relative pt-12 pb-20 bg-gradient-to-b from-sky-50/70 via-white to-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <!-- Header Eyebrow -->
+        <div class="flex flex-wrap items-center gap-2.5 mb-6">
+          <span class="badge-dev badge-dev-blue">DREAMS-I &bull; Loan No. 4396-PAK</span>
+          <span class="badge-dev badge-dev-green">Bahawalpur ISWM & UC-14 Initiative</span>
+          <span class="badge-dev badge-dev-amber">Verified Evidence & Impact</span>
+        </div>
+
+        <!-- Hero Headline & Subheading -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          <div class="lg:col-span-7">
+            <h1 class="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-brand-950 tracking-tight leading-[1.15] mb-6 font-serif">
+              From Awareness to <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-emerald-600">Sustainable Practice</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-600 font-normal leading-relaxed mb-8">
+              The Bahawalpur journey from community awareness to the UC-14 Two-Bin Segregation Pilot and wider provincial replication.
+            </p>
+            <div class="flex flex-wrap gap-4 items-center">
+              <a href="#uc14" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition flex items-center gap-2 text-sm">
+                Explore the UC-14 Case Study
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+              <a href="#timeline" class="px-6 py-3.5 bg-white border border-slate-300 hover:border-slate-400 text-slate-700 font-semibold rounded-lg shadow-sm hover:shadow transition flex items-center gap-2 text-sm">
+                View Interactive Timeline
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Media Card with Authentic Project Imagery -->
+          <div class="lg:col-span-5">
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-slate-900 group">
+              <img src="assets/images/household-two-bin-practice.jpg" alt="Household Two-Bin Segregation Practice in Bahawalpur" class="w-full h-80 sm:h-96 object-cover transform group-hover:scale-105 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-brand-950/30 to-transparent flex flex-col justify-end p-6 text-white">
+                <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-emerald-500/90 text-white px-2 py-0.5 rounded w-max mb-2">Ground Evidence</span>
+                <p class="text-sm font-semibold leading-snug">Verified household adoption of Two-Bin wet/dry waste segregation in Bahawalpur UC-14.</p>
+                <p class="text-xs text-slate-300 mt-1">Source: CIT Field Follow-up & Community Photographic Verification</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Six Key Milestones Cards -->
+        <div class="mb-14">
+          <div class="text-xs uppercase tracking-wider font-extrabold text-slate-400 mb-4">Milestone Evolution</div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
+            
+            <div class="milestone-card border-t-4 border-sky-500">
+              <div class="text-[11px] font-bold text-sky-700 uppercase tracking-wider mb-1">2024</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">Pre-Inception Documentary</div>
+              <div class="text-xs text-slate-500 leading-relaxed">Documenting baseline mixed dumping & introducing the two-bin model.</div>
+            </div>
+
+            <div class="milestone-card border-t-4 border-sky-600">
+              <div class="text-[11px] font-bold text-sky-700 uppercase tracking-wider mb-1">2025</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">SBCC Outreach</div>
+              <div class="text-xs text-slate-500 leading-relaxed">150 core sessions reaching 10,109 individuals (~70% women).</div>
+            </div>
+
+            <div class="milestone-card border-t-4 border-emerald-500">
+              <div class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">UC-14</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">Two-Bin Pilot</div>
+              <div class="text-xs text-slate-500 leading-relaxed">101-acre pilot zone with 1,300+ households and 1,035 bin sets.</div>
+            </div>
+
+            <div class="milestone-card border-t-4 border-emerald-600">
+              <div class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">Community</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">Practice & Participation</div>
+              <div class="text-xs text-slate-500 leading-relaxed">Door-to-door social mobilization, schools, and inclusive engagement.</div>
+            </div>
+
+            <div class="milestone-card border-t-4 border-slate-700">
+              <div class="text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Administration</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">Institutional Engagement</div>
+              <div class="text-xs text-slate-500 leading-relaxed">DC Bahawalpur field visits, ADC briefings, and CIT-BWMC alignment.</div>
+            </div>
+
+            <div class="milestone-card border-t-4 border-amber-500">
+              <div class="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Punjab</div>
+              <div class="text-sm font-bold text-slate-900 mb-1">Replication Direction</div>
+              <div class="text-xs text-slate-500 leading-relaxed">Chief Minister Punjab directive to scale the UC-14 model province-wide.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Prominent Visual Pathway Banner -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-md">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <span class="text-xs uppercase font-extrabold tracking-widest text-sky-600">The Behaviour Transformation Framework</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-brand-950 mt-1">Core Progression Pathway</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Sustainable solid waste management occurs when institutional infrastructure meets community habits.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-center">
+            <div class="pathway-step bg-sky-50/60 border-sky-200">
+              <span class="w-6 h-6 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs font-bold mr-2">1</span>
+              Awareness
+            </div>
+            <div class="text-slate-300 font-bold hidden sm:block">&rarr;</div>
+            <div class="pathway-step bg-emerald-50/60 border-emerald-200">
+              <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold mr-2">2</span>
+              Practice
+            </div>
+            <div class="text-slate-300 font-bold hidden sm:block">&rarr;</div>
+            <div class="pathway-step bg-teal-50/60 border-teal-200">
+              <span class="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold mr-2">3</span>
+              Ownership
+            </div>
+            <div class="text-slate-300 font-bold hidden sm:block">&rarr;</div>
+            <div class="pathway-step bg-amber-50/60 border-amber-200">
+              <span class="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold mr-2">4</span>
+              Recognition
+            </div>
+            <div class="text-slate-300 font-bold hidden sm:block">&rarr;</div>
+            <div class="pathway-step bg-indigo-50/60 border-indigo-200">
+              <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold mr-2">5</span>
+              Peer Influence
+            </div>
+            <div class="text-slate-300 font-bold hidden sm:block">&rarr;</div>
+            <div class="pathway-step bg-purple-50/60 border-purple-200 font-bold text-purple-900">
+              <span class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold mr-2">6</span>
+              Wider Change
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 2. ABOUT DREAMS-I: INTEGRATED SOLID WASTE MANAGEMENT     -->
+    <!-- ========================================================= -->
+    <section id="about" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-7">
+            <span class="badge-dev badge-dev-blue mb-3">Institutional Mandate</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight mb-6">
+              About the DREAMS-I Initiative
+            </h2>
+            <div class="space-y-4 text-slate-600 text-base leading-relaxed">
+              <p>
+                The Government of the Punjab is implementing <strong>DREAMS-I</strong> (<em>Developing Resilient Environments and Advancing Municipal Services - Phase I</em>), a major urban resilience initiative funded by the <strong>Asian Development Bank (ADB)</strong> under <strong>Loan No. 4396-PAK</strong>.
+              </p>
+              <p>
+                In Bahawalpur, the project is overhauling the municipal solid waste framework by shifting away from mixed-waste collection and open dumping toward a full <strong>Integrated Solid Waste Management (ISWM)</strong> pipelineâ€”encompassing segregated collection, a Material Recovery Facility (MRF), and an engineered sanitary landfill.
+              </p>
+            </div>
+
+            <!-- The Sustainable Waste Management Equation -->
+            <div class="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-xl shadow-inner">
+              <div class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">The Multi-Dimensional Sustainability Formula</div>
+              <div class="text-base sm:text-lg font-extrabold text-brand-900 font-serif leading-snug">
+                Infrastructure + Systems + Institutions + Communities + Behaviour = Long-Term Resilience
+              </div>
+              <p class="text-xs sm:text-sm text-slate-500 mt-2">
+                Physical machinery and landfill sites achieve lasting impact only when household habits and municipal operations synchronize through structured Social and Behaviour Change Communication (SBCC).
+              </p>
+            </div>
+
+            <div class="mt-6 flex items-center gap-4 text-xs text-slate-500">
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> ADB Loan 4396-PAK</span>
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-500"></span> Benefiting ~1.5M Citizens</span>
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-brand-800"></span> Executed by BWMC</span>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 shadow-lg">
+              <img src="assets/images/project-rationale-iswm.jpg" alt="DREAMS-I ISWM Project Rationale from Mixed Waste to Engineered Landfill" class="w-full rounded-xl object-cover shadow-sm">
+              <div class="p-4">
+                <h3 class="text-sm font-bold text-slate-900 mb-1">Project Rationale: Pipeline Transition</h3>
+                <p class="text-xs text-slate-500">
+                  Moving from unsegregated dumping to a segregated collection-to-disposal pipeline: source segregation &rarr; Material Recovery Facility (MRF) &rarr; scientific landfill.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 3. PARTNERSHIPS: THE CONNECTED MULTI-STAKEHOLDER ECOSYSTEM -->
+    <!-- ========================================================= -->
+    <section id="partnerships" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Collaborative Governance</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            A Connected Development Ecosystem
+          </h2>
+          <p class="text-base text-slate-600 mt-3 leading-relaxed">
+            Rather than a conventional donor-client hierarchy, DREAMS-I operates as a mutually reinforcing ecosystem connecting multilateral financing, municipal operations, international child & WASH expertise, and citizen participation.
+          </p>
+        </div>
+
+        <!-- Strategic LoU Callout -->
+        <div class="mb-12 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-sky-100 text-sky-700 rounded-xl">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Strategic Partnership Letter of Understanding</span>
+              <h3 class="text-lg font-bold text-brand-950 mt-0.5">Formalized Cooperation between ADB & UNICEF</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                Signed on <strong>5 March 2024</strong> between ADB Country Director Yong Ye and UNICEF Representative Abdullah Fadil to unite capital investment with behavioral communication across Bahawalpur and Rawalpindi.
+              </p>
+            </div>
+          </div>
+          <a href="#resources" class="shrink-0 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition border border-slate-300">
+            View Signed LoU Document &rarr;
+          </a>
+        </div>
+
+        <!-- Five Ecosystem Pillars -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="h-12 flex items-center mb-4">
+              <img src="assets/images/logos/logo-adb.jpeg" alt="ADB" class="h-9 w-auto object-contain rounded">
+            </div>
+            <div class="text-xs font-bold uppercase text-sky-700 tracking-wider mb-1">Multilateral Oversight</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2">Asian Development Bank</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Provides principal loan financing (Loan 4396-PAK), technical guidelines, safeguard standards, and capital reform supervision.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="h-12 flex items-center mb-4">
+              <img src="assets/images/logos/logo-unicef.png" alt="UNICEF" class="h-8 w-auto object-contain">
+            </div>
+            <div class="text-xs font-bold uppercase text-sky-700 tracking-wider mb-1">Behaviour Change (SBCC)</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2">UNICEF Pakistan</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Designs social and behaviour change communication (SBCC) modules, educational tools, documentary storytelling, and inclusive mobilization.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="h-12 flex items-center mb-4">
+              <img src="assets/images/logos/logo-bwmc.png" alt="BWMC" class="h-11 w-auto object-contain">
+            </div>
+            <div class="text-xs font-bold uppercase text-sky-700 tracking-wider mb-1">Municipal Operations</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2">BWMC Bahawalpur</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Executes daily door-to-door waste collection, vehicle deployment, beat mapping, sanitary worker supervision, and bin distribution.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="h-12 flex items-center mb-4">
+              <img src="assets/images/logos/logo-punjab.png" alt="Punjab Government" class="h-11 w-auto object-contain">
+            </div>
+            <div class="text-xs font-bold uppercase text-sky-700 tracking-wider mb-1">Administrative Leadership</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2">Govt & Local Admin</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Deputy Commissioner, Divisional Commissioner, PCU, and Local Government department aligning city operations with the Chief Minister's vision.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="h-12 flex items-center mb-4">
+              <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                UC-14
+              </div>
+            </div>
+            <div class="text-xs font-bold uppercase text-emerald-700 tracking-wider mb-1">Grassroots Ownership</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2">Citizenry & Workers</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Households segregating daily, Zero Waste student ambassadors, women participants, and frontline sanitary workers as change agents.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. THE JOURNEY / INTERACTIVE TIMELINE                     -->
+    <!-- ========================================================= -->
+    <section id="timeline" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="badge-dev badge-dev-blue mb-3">Chronological Trajectory</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            The Bahawalpur Implementation Journey
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Explore how the initiative grew systematically from documentary research to household action and provincial directive.
+          </p>
+          
+          <!-- Filter Buttons -->
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-2">
+            <button class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-sky-600 text-white shadow-sm transition" data-phase="all">All Milestones</button>
+            <button class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200" data-phase="2024">2024 Pre-Inception</button>
+            <button class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200" data-phase="2025">2025 SBCC Outreach</button>
+            <button class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200" data-phase="pilot">2025-2026 UC-14 Pilot</button>
+            <button class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 hover:bg-slate-100 transition border border-slate-200" data-phase="admin">Governance & Scale</button>
+          </div>
+        </div>
+
+        <!-- Timeline Items Container -->
+        <div class="max-w-4xl mx-auto relative pl-6 sm:pl-8 border-l-2 border-slate-200 space-y-12">
+
+          <!-- Item 1: 2024 Pre-Inception Documentary -->
+          <div class="timeline-item relative" data-phase="2024">
+            <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-sky-600 border-4 border-white shadow"></div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Phase 1 &bull; 2024</span>
+                <span class="text-xs font-medium text-slate-500">Documentary Research & Introduction</span>
+              </div>
+              <h3 class="text-xl font-bold text-brand-950 mb-2">Pre-Inception Documentary: Film for Change</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                Ahead of on-ground distribution, a 30-minute documentaryâ€”<em>"Film for Change: Transforming 10,000 Lives Through Stories"</em>â€”was commissioned. It recorded Bahawalpur's mixed waste dumping challenges and introduced the conceptual Two-Bin System (Blue for Dry, Green for Wet) with relatable community characters.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <img src="assets/images/film-screening-cornerstone.png" alt="Film Screening as a Cornerstone Strategy" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+                <img src="assets/images/two-bin-system-concept.jpg" alt="Illustrated concept of the Two-Bin System" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: 2025 SBCC Outreach -->
+          <div class="timeline-item relative" data-phase="2025">
+            <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-sky-600 border-4 border-white shadow"></div>
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-6 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Phase 2 &bull; 2025</span>
+                <span class="text-xs font-medium text-slate-500">3-Month Broad Outreach Campaign</span>
+              </div>
+              <h3 class="text-xl font-bold text-brand-950 mb-2">Mass Community & Institutional Engagement</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                Carried out across greater Bahawalpur via two coordinated facilitation units (Team A and Team B). Reached <strong>10,109 individuals</strong> through <strong>150 awareness sessions</strong> (115 school/college sessions, 35 community sessions).
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                <div class="bg-white p-2.5 rounded border border-slate-200">
+                  <div class="font-extrabold text-sky-700 text-base">10,109</div>
+                  <div class="text-slate-500 text-[11px]">Total Reach</div>
+                </div>
+                <div class="bg-white p-2.5 rounded border border-slate-200">
+                  <div class="font-extrabold text-sky-700 text-base">6,908</div>
+                  <div class="text-slate-500 text-[11px]">Female (~70%)</div>
+                </div>
+                <div class="bg-white p-2.5 rounded border border-slate-200">
+                  <div class="font-extrabold text-sky-700 text-base">150</div>
+                  <div class="text-slate-500 text-[11px]">Sessions Held</div>
+                </div>
+                <div class="bg-white p-2.5 rounded border border-slate-200">
+                  <div class="font-extrabold text-sky-700 text-base">466+</div>
+                  <div class="text-slate-500 text-[11px]">HH Feedback Logs</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: 2025-2026 UC-14 Pilot -->
+          <div class="timeline-item relative" data-phase="pilot">
+            <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-emerald-600 border-4 border-white shadow"></div>
+            <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl p-6 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Phase 3 &bull; 2025â€“2026</span>
+                <span class="text-xs font-medium text-emerald-700">Practical Field Implementation</span>
+              </div>
+              <h3 class="text-xl font-bold text-brand-950 mb-2">UC-14 Two-Bin Segregation Pilot Rollout</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                Shifted decisively from classroom awareness to door-to-door physical implementation in UC-14 (Trust Colony & Mohammadia Colony, ~101 acres). Over <strong>1,035 Two-Bin sets distributed</strong> across 1,300+ households with GIS beat mapping and designated collection carts.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <img src="assets/images/door-to-door-distribution.jpg" alt="Door to Door Two-Bin Distribution in UC-14" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+                <img src="assets/images/uc14-beat-mapping.jpg" alt="UC-14 Combined Beat Mapping" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: Institutional Engagement & Provincial Replication -->
+          <div class="timeline-item relative" data-phase="admin">
+            <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-amber-500 border-4 border-white shadow"></div>
+            <div class="bg-amber-50/40 border border-amber-200 rounded-xl p-6 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Phase 4 &bull; 2026</span>
+                <span class="text-xs font-medium text-slate-500">Government Briefing & Mandate</span>
+              </div>
+              <h3 class="text-xl font-bold text-brand-950 mb-2">Administrative Review & Chief Minister Directive</h3>
+              <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                Deputy Commissioner Bahawalpur conducted field inspections in UC-14, observing segregated cart collections and household compliance. The DC briefed the <strong>Chief Minister of Punjab</strong>, leading to an official directive to replicate the Bahawalpur UC-14 Two-Bin Segregation model across Punjab under "Suthra Punjab".
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <img src="assets/images/dc-bahawalpur-field-visit.jpeg" alt="Field visit of DC Bahawalpur to UC-14" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+                <img src="assets/images/cm-maryam-nawaz-direction-tweet.png" alt="Chief Minister Punjab Directive on Two-Bin Segregation" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. SBCC CAMPAIGN: FROM COMMUNICATION TO BEHAVIOUR CHANGE  -->
+    <!-- ========================================================= -->
+    <section id="sbcc" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Structured Methodology</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            From Communication to Behaviour Change
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            SBCC is not passive marketingâ€”it is an evidence-based behavioral framework designed to take communities from passive exposure to daily, ingrained waste segregation.
+          </p>
+          
+          <!-- SBCC 5-Step Formula -->
+          <div class="mt-6 inline-flex flex-wrap items-center justify-center gap-2 bg-white px-5 py-2.5 rounded-full border border-slate-200 shadow-sm text-xs font-bold text-slate-700">
+            <span class="text-sky-700">Inform</span> &rarr;
+            <span class="text-sky-700">Demonstrate</span> &rarr;
+            <span class="text-emerald-700">Engage</span> &rarr;
+            <span class="text-emerald-700">Practice</span> &rarr;
+            <span class="text-indigo-700">Sustain</span>
+          </div>
+        </div>
+
+        <!-- 8 SBCC Visual Modalities Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Card 1: Film Screenings -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/film-screening-cornerstone.png" alt="Film Screenings" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 1 &bull; Inform</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Film Screenings</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Screened in community centers, schools, and mohallas. Relatable character narratives introduced why wet and dry waste must be separated at home.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2: Practical Demonstrations -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/school-campaign-presentation.jpg" alt="Practical Demonstrations" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 2 &bull; Demonstrate</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Practical Demonstrations</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Live hands-on segregation of real domestic waste using prototype bins, teaching residents to keep wet kitchen food scraps out of dry plastics and cartons.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3: School Outreach -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/school-sessions-ggs-abbasia.jpg" alt="School Outreach Sessions" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 3 &bull; Engage</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">School Outreach (115 Sessions)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Extensive school sessions at institutions like G.G.S Canal Road and Abbasia B.H.S.S, transforming students into household hygiene catalysts.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 4: Community Mohalla Sessions -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/community-action-session-3.jpg" alt="Community Sessions" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 4 &bull; Engage</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Community Sessions (35 Hubs)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Gatherings in residential lanes, drawing neighborhood elders, family heads, and local influencers to build localized social accountability.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 5: Women's Community Sessions -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/community-women-session-1.jpg" alt="Women Community Sessions" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 5 &bull; Inclusivity</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Womenâ€™s Community Sessions</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Women made up ~70% of relevant community session participants, reflecting their direct, daily control over domestic kitchen waste sorting.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 6: Transgender Community Sessions -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/transgender-community-session.jpg" alt="Transgender Community Awareness" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-purple-600 uppercase tracking-wider">Step 6 &bull; Equity</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Transgender Community Workshops</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Dedicated awareness classes and discussions conducted with transgender community members, ensuring whole-of-society municipal inclusion.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 7: Zero Waste Warriors -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/zero-waste-warriors.jpg" alt="Zero Waste Warriors Student Ambassadors" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Step 7 &bull; Practice</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Zero Waste Warriors</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                A student ambassador corps in flagship Bahawalpur schools monitoring campus cleanliness and championing household segregation.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 8: Eco-Friendly Pencil Workshops -->
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+            <img src="assets/images/eco-pencil-workshop-women.jpg" alt="Eco-Friendly Pencil Making" class="w-full h-44 object-cover">
+            <div class="p-5">
+              <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 8 &bull; Sustain</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Eco-Pencil Making Workshops</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Experiential workshops converting discarded waste paper into usable graphite pencils, demonstrating the tangible worth of dry recyclables.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 6. INCLUSIVE ENGAGEMENT: WOMEN, STUDENTS, TRANSGENDER      -->
+    <!-- ========================================================= -->
+    <section id="inclusive" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-green mb-3">Equity & Social Inclusion</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Inclusive Community Mobilization
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            The Bahawalpur campaign systematically reached demographic groups that are often marginalized or omitted in traditional engineering-heavy waste projects.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Pillar 1: Women Participation -->
+          <div class="bg-slate-50 rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="p-2.5 rounded-xl bg-sky-100 text-sky-700">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </span>
+                <span class="text-2xl font-extrabold text-sky-700">~70%</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Women as Household Stewards</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Women comprised approximately <strong>70% of participants</strong> (6,908 out of 10,109 reached) in relevant community awareness sessions.
+              </p>
+              <div class="text-xs text-slate-500 bg-white p-3 rounded-lg border border-slate-200 mb-4 leading-relaxed">
+                <strong>Evidence Note:</strong> In strict alignment with verified project records, the sessions provided a direct platform for women's active participation in household source segregation practices. No unsupported claims of livelihood or income generation were made.
+              </div>
+            </div>
+            <img src="assets/images/community-women-session-2.jpg" alt="Women Community Participation" class="rounded-xl object-cover h-48 w-full border border-slate-200">
+          </div>
+
+          <!-- Pillar 2: Students & Zero Waste Warriors -->
+          <div class="bg-slate-50 rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="p-2.5 rounded-xl bg-amber-100 text-amber-700">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </span>
+                <span class="text-2xl font-extrabold text-amber-700">115</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Zero Waste Warriors: Student Ambassadors</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Engaging over 115 institutional sessions across Bahawalpur, the <strong>Zero Waste Warriors</strong> initiative trained students to become environmental ambassadors, educating parents and peers on dry vs wet waste segregation.
+              </p>
+              <div class="text-xs text-slate-500 bg-white p-3 rounded-lg border border-slate-200 mb-4 leading-relaxed">
+                <strong>Activity Focus:</strong> Film screenings, student-led assemblies, eco-friendly pencil fabrication workshops, and awareness fan distribution.
+              </div>
+            </div>
+            <img src="assets/images/zero-waste-warriors.jpg" alt="Zero Waste Warriors student ambassadors" class="rounded-xl object-cover h-48 w-full border border-slate-200">
+          </div>
+
+          <!-- Pillar 3: Transgender Community Engagement -->
+          <div class="bg-slate-50 rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="p-2.5 rounded-xl bg-purple-100 text-purple-700">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </span>
+                <span class="text-xs font-bold uppercase tracking-wider bg-purple-200 text-purple-900 px-2 py-0.5 rounded">Inclusive</span>
+              </div>
+              <h3 class="text-lg font-bold text-slate-900 mb-2">Transgender Community Inclusivity</h3>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                The initiative conducted dedicated awareness sessions and interactive workshops with transgender community members in Bahawalpur, respecting their dignity and civic leadership.
+              </p>
+              <div class="text-xs text-slate-500 bg-white p-3 rounded-lg border border-slate-200 mb-4 leading-relaxed">
+                <strong>Principles:</strong> Non-tokenistic, respectful engagement focused on safe household hygiene, environmental responsibility, and community solid waste participation.
+              </div>
+            </div>
+            <img src="assets/images/transgender-community-session.jpg" alt="Transgender Community Engagement Workshop" class="rounded-xl object-cover h-48 w-full border border-slate-200">
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 7. TWO-BIN SYSTEM & INTERACTIVE SORTING SIMULATOR         -->
+    <!-- ========================================================= -->
+    <section id="two-bin" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="badge-dev badge-dev-blue mb-3">Household Standard</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            The Two-Bin Source Segregation System
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Clear, intuitive color-coding that makes source waste segregation straightforward for every household member.
+          </p>
+
+          <!-- Urdu Slogan Callout Box -->
+          <div class="mt-6 bg-gradient-to-r from-emerald-100 via-sky-100 to-emerald-100 border border-emerald-300 rounded-2xl p-4 sm:p-6 shadow-sm">
+            <div class="text-2xl sm:text-3xl font-bold font-urdu text-brand-950 mb-1" dir="rtl">
+              â€œØ³ÙˆÚ©Ú¾Û’ Ú©Ø§ Ù¹Ú¾Ú©Ø§Ù†Û Ù†ÛŒÙ„Ø§ØŒ ÛØ±Û’ Ù…ÛŒÚº ÚˆØ§Ù„ÛŒÚº Ú¯ÛŒÙ„Ø§â€
+            </div>
+            <div class="text-xs sm:text-sm font-semibold tracking-wide text-brand-800">
+              â€œSookhe ka thikana neela, haray mein daalyn geela.â€
+            </div>
+            <div class="text-xs text-slate-600 mt-1">
+              (Dry waste in the Blue bin, Wet waste in the Green bin)
+            </div>
+          </div>
+        </div>
+
+        <!-- The Two Bins Technical Breakdown -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+          
+          <!-- Green Bin (Wet) -->
+          <div class="bin-card-wet rounded-2xl p-7 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">G</span>
+                <div>
+                  <h3 class="text-xl font-bold text-emerald-950">Green Bin: Wet / Organic Waste</h3>
+                  <div class="text-xs font-semibold text-emerald-800 font-urdu" dir="rtl">ÛØ±Ø§ ÚˆØ¨Û: Ú¯ÛŒÙ„Ø§ Ú©ÙˆÚ‘Ø§</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold bg-emerald-200 text-emerald-900 px-2.5 py-1 rounded-full uppercase">Organic Stream</span>
+            </div>
+            <p class="text-xs sm:text-sm text-emerald-900 mb-4 leading-relaxed">
+              Consists of biodegradable items that break down naturally. Segregating wet waste prevents offensive odors, avoids liquid contamination of dry materials, and creates feedstocks for agricultural compost.
+            </p>
+            <div class="space-y-2 text-xs text-emerald-950 font-medium">
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Fruit and vegetable trimmings, peels & seeds</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Leftover cooked food, bones, and bread pieces</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Tea leaves (chaey ki patti) & coffee grounds</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Garden trimmings, plant leaves & cut grass</div>
+            </div>
+          </div>
+
+          <!-- Blue Bin (Dry) -->
+          <div class="bin-card-dry rounded-2xl p-7 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">B</span>
+                <div>
+                  <h3 class="text-xl font-bold text-blue-950">Blue Bin: Dry / Recyclable Waste</h3>
+                  <div class="text-xs font-semibold text-blue-800 font-urdu" dir="rtl">Ù†ÛŒÙ„Ø§ ÚˆØ¨Û: Ø³ÙˆÚ©Ú¾Ø§ Ú©ÙˆÚ‘Ø§</div>
+                </div>
+              </div>
+              <span class="text-xs font-bold bg-blue-200 text-blue-900 px-2.5 py-1 rounded-full uppercase">Inorganic Stream</span>
+            </div>
+            <p class="text-xs sm:text-sm text-blue-900 mb-4 leading-relaxed">
+              Consists of clean, dry items suitable for the Material Recovery Facility (MRF) or secondary recycling markets. Keeping them dry preserves their economic and material value.
+            </p>
+            <div class="space-y-2 text-xs text-blue-950 font-medium">
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Plastic bottles (PET), food containers & clean bags</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Cardboard boxes, cartons (gatta) & newspapers</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Metal cans, drink tins & scrap foil</div>
+              <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Glass jars, clean packaging & dry textiles</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Interactive Two-Bin Sorting Test / Simulator -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-md">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100 mb-6">
+            <div>
+              <span class="text-xs font-extrabold text-sky-700 uppercase tracking-wider">Interactive Sorter</span>
+              <h3 class="text-lg font-bold text-slate-900">Test Your Source Segregation Skills</h3>
+              <p class="text-xs text-slate-500">Drag or click any item to assign it to its designated collection bin.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span id="sorter-score" class="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg border border-slate-200">0 / 8 Sorted</span>
+              <button id="sorter-reset-btn" class="text-xs font-semibold text-sky-600 hover:text-sky-800 underline">Reset Test</button>
+            </div>
+          </div>
+
+          <!-- Items Pool -->
+          <div id="sorting-items-pool" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- Drop Zones (Green & Blue) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+            
+            <div id="dropzone-wet" class="p-6 rounded-xl border-2 border-dashed border-emerald-400 bg-emerald-50/70 text-center cursor-pointer transition">
+              <div class="text-3xl mb-2">ðŸŸ¢</div>
+              <div class="text-sm font-bold text-emerald-950">Deposit in Green Bin (Wet)</div>
+              <div class="text-xs text-emerald-700">Kitchen scraps, fruit/vegetable peels, leftover food</div>
+            </div>
+
+            <div id="dropzone-dry" class="p-6 rounded-xl border-2 border-dashed border-blue-400 bg-blue-50/70 text-center cursor-pointer transition">
+              <div class="text-3xl mb-2">ðŸ”µ</div>
+              <div class="text-sm font-bold text-blue-950">Deposit in Blue Bin (Dry)</div>
+              <div class="text-xs text-blue-700">Plastic bottles, cardboard cartons, tins, paper</div>
+            </div>
+
+          </div>
+
+          <!-- Feedback Box -->
+          <div id="sorter-feedback" class="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs min-h-[44px] flex items-center justify-center text-center">
+            <!-- Populated via JS -->
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 8. UC-14 CASE STUDY: THE CENTRAL AND STRONGEST CHAPTER    -->
+    <!-- ========================================================= -->
+    <section id="uc14" data-slide="true" class="py-24 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="max-w-4xl mx-auto text-center mb-16">
+          <span class="badge-dev badge-dev-green mb-3">Central Case Study & Ground Pilot</span>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-brand-950 font-serif tracking-tight">
+            UC-14: From Awareness to Practice
+          </h2>
+          <p class="text-lg text-slate-600 mt-4 leading-relaxed">
+            The landmark pilot in Union Council 14 (Mohammadia Colony & Trust Colony) that turned Bahawalpurâ€™s behaviour-change strategy into measurable on-the-ground municipal reality.
+          </p>
+        </div>
+
+        <!-- UC-14 Pilot Profile Metrics Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-950 font-serif">~101</div>
+            <div class="text-xs font-bold text-slate-500 uppercase mt-1">Total Acres Mapped</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Trust (~57ac) & Mohammadia (~44ac)</div>
+          </div>
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-950 font-serif">1,300+</div>
+            <div class="text-xs font-bold text-slate-500 uppercase mt-1">Households Reached</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Plus 91 commercial outlets</div>
+          </div>
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 font-serif">1,035</div>
+            <div class="text-xs font-bold text-slate-500 uppercase mt-1">Two-Bin Sets Distributed</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Door-to-door handoff with guidance</div>
+          </div>
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-center">
+            <div class="text-2xl sm:text-3xl font-extrabold text-sky-600 font-serif">15</div>
+            <div class="text-xs font-bold text-slate-500 uppercase mt-1">Community Sessions</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">600+ direct participants in UC-14</div>
+          </div>
+        </div>
+
+        <!-- The 8-Stage Chronological Implementation Journey -->
+        <div class="mb-16">
+          <div class="text-xs uppercase font-extrabold tracking-widest text-slate-400 mb-6 text-center">
+            The 8 Sequential Field Phases of UC-14
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-brand-900 text-white flex items-center justify-center text-xs font-bold mb-3">1</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Community Mobilization</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Initial meetings with colony elders and local leadership on 15 July 2026 to outline the two-bin initiative and gain neighborhood trust.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-brand-900 text-white flex items-center justify-center text-xs font-bold mb-3">2</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Door-to-Door Awareness</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Dedicated Social Mobilizer teams walked door-to-door explaining wet/dry differences, answering queries, and addressing domestic space constraints.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-brand-900 text-white flex items-center justify-center text-xs font-bold mb-3">3</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Household Engagement</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Structured conversations with homemakers, demonstrating where bins should sit in kitchens and courtyards for easiest daily sorting.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold mb-3">4</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Two-Bin Practice</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Handing over 1,035 pairs of color-coded Green (Wet) and Blue (Dry) containers with user flipbooks and reminder checklists.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold mb-3">5</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Segregated Collection</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                BWMC collection carts were adapted with compartmentalized bins so that segregated household waste was never mixed together during collection.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs font-bold mb-3">6</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Worker Engagement</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Frontline sanitary staff received specialized training, personal protective gear, and a direct revenue share from segregated recyclable sales.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs font-bold mb-3">7</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Monitoring & Learning</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Daily logbooks recording plastic and cardboard weights, tracking household participation rates, and documenting operational bottlenecks.
+              </p>
+            </div>
+
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+              <span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold mb-3">8</span>
+              <h3 class="text-sm font-bold text-slate-900 mb-1">Community Ownership</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Neighbourhood peer reinforcement where compliant households encouraged adjacent neighbors to maintain segregation standards.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Featured Beat Mapping & Photographic Evidence Showcase -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
+          <div class="lg:col-span-6 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <img src="assets/images/uc14-beat-mapping.jpg" alt="UC-14 Beat Mapping: Trust Colony & Mohammadia Colony" class="w-full rounded-xl object-contain shadow cursor-pointer hover:opacity-95 transition" onclick="document.querySelector('#gallery [data-title*=\'Beat Mapping\']')?.click()">
+            <div class="p-3 text-xs text-slate-500 flex items-center justify-between">
+              <span><strong>GIS Beat Allocation:</strong> Trust Colony (~57ac) & Mohammadia Colony (~44ac)</span>
+              <span class="text-sky-600 font-semibold">Click to zoom in gallery</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6 space-y-4">
+            <span class="badge-dev badge-dev-blue">Operational Innovation</span>
+            <h3 class="text-2xl font-bold text-brand-950 font-serif">Beat Mapping and Ground Zoning</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              To ensure every single lane was covered without gaps or overlaps, the City Implementation Team (CIT) zoned UC-14 into structured sanitary beats. Each beat was assigned a dedicated frontline sanitary worker paired with a social mobilizer for follow-up visits.
+            </p>
+            <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+              <div class="flex items-center justify-between py-1 border-b border-slate-100">
+                <span>Trust Colony (Beats 1-5):</span>
+                <span class="font-bold text-slate-800">600+ Households &bull; 351 Bins</span>
+              </div>
+              <div class="flex items-center justify-between py-1 border-b border-slate-100">
+                <span>Mohammadia Colony (Beats 6-10):</span>
+                <span class="font-bold text-slate-800">550+ Households &bull; 499 Bins</span>
+              </div>
+              <div class="flex items-center justify-between py-1">
+                <span>Commercial & Institutional Units:</span>
+                <span class="font-bold text-slate-800">91 Outlets, 1 Park, 7 Mosques, 11 Schools</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- High-Impact Section: What the Field Taught Us -->
+        <div class="bg-gradient-to-br from-brand-950 to-brand-900 text-white rounded-2xl p-8 sm:p-12 shadow-xl">
+          <div class="max-w-3xl mb-8">
+            <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Practitioner Synthesis</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold font-serif mt-1">What the Field Taught Us</h3>
+            <p class="text-sm text-slate-300 mt-2">
+              Hard-won operational principles distilled from direct municipal and community encounters in UC-14.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs sm:text-sm">
+            
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">1. Awareness Must Lead to Practice</div>
+              <p class="text-slate-300 leading-relaxed">
+                Communication without physical bins or immediate collection systems creates cynicism. Awareness activities must be directly paired with distribution and collection.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">2. Behaviour Change Requires Continuity</div>
+              <p class="text-slate-300 leading-relaxed">
+                A single household visit does not break decades of unsegregated disposal habits. Continuous follow-up visits during weeks 2, 4, and 6 cemented the habit.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">3. SBCC and Operations Must Work Together</div>
+              <p class="text-slate-300 leading-relaxed">
+                If citizens segregate their bins but the collection truck dumps everything into one mixed hopper, community trust vanishes. Operations and messaging must match perfectly.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">4. Frontline Workers Are Critical Change Agents</div>
+              <p class="text-slate-300 leading-relaxed">
+                Sanitary workers have daily, informal face-to-face contact with householders. When respected, trained, and incentivized, they become the strongest behavior reinforcers.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">5. Beat Mapping & Operational Planning Matter</div>
+              <p class="text-slate-300 leading-relaxed">
+                Clear GIS parcel boundaries and assigned staff zones create personal accountability. Workers take pride in keeping their specific beat clean.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+              <div class="font-bold text-emerald-400 text-sm mb-1.5">6. Community Participation Strengthens Sustainability</div>
+              <p class="text-slate-300 leading-relaxed">
+                When mohalla elders and women are brought into the design process rather than treated as passive beneficiaries, they police street cleanliness themselves.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 9. WORKERS AS CHANGE AGENTS: SANITARY WORKER INCENTIVES   -->
+    <!-- ========================================================= -->
+    <section id="workers" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-6 space-y-6">
+            <span class="badge-dev badge-dev-amber">Frontline Human-Centred Model</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+              Frontline Workers as Catalysts of Change
+            </h2>
+            <p class="text-slate-600 text-base leading-relaxed">
+              In conventional waste management systems, sanitary workers are often treated as invisible labor. The Bahawalpur DREAMS-I pilot deliberately repositioned workers and supervisors as active community ambassadors and respected municipal change agents.
+            </p>
+
+            <!-- Worker Progression Framework -->
+            <div class="p-4 bg-white rounded-xl border border-slate-200 shadow-sm text-xs space-y-2">
+              <div class="font-bold text-slate-800 uppercase tracking-wide">The Sanitary Worker Empowerment Trajectory</div>
+              <div class="font-semibold text-brand-900">
+                Awareness &rarr; Practice &rarr; Recognition &rarr; Peer Influence &rarr; Wider Community Change
+              </div>
+              <p class="text-slate-500">
+                Because sanitary workers interact with households every single morning, a word of gratitude or gentle reminder from them is 10 times more effective than a top-down notice.
+              </p>
+            </div>
+
+            <!-- Incentive & Revenue Sharing Data -->
+            <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-emerald-950">
+              <div class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1">Direct Worker Incentives from Recyclable Yield</div>
+              <div class="text-2xl font-extrabold text-emerald-900 font-serif">Rs. 22,639 Distributed</div>
+              <p class="text-xs text-emerald-800 mt-1 leading-relaxed">
+                During the Julyâ€“August 2026 pilot monitoring, <strong>550+ kg of clean segregated recyclables</strong> (184.5 kg plastic and 365.5 kg cardboard) were logged with a recorded value of Rs. 30,019. The proceeds (Rs. 22,639) were disbursed directly to the sanitary workers collecting and maintaining segregation in Trust Colony and Mohammadia Colony.
+              </p>
+            </div>
+
+            <div class="text-xs text-slate-500 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Documented event: Formal Worker Recognition Ceremony held in Trust Colony on 13 August 2026.
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-4">
+            <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-md">
+              <img src="assets/images/sanitary-workers-recognition.jpg" alt="Formal Recognition of Sanitary Workers in Trust Colony - 13 August 2026" class="w-full h-72 object-cover rounded-xl shadow-sm">
+              <div class="p-3">
+                <h3 class="text-sm font-bold text-slate-900">Sanitary Workers Recognition Ceremony</h3>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Trust Colony, Bahawalpur &bull; 13 August 2026. Frontline teams celebrated for exemplary beat maintenance and household segregation compliance.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-white p-2 rounded-xl border border-slate-200">
+                <img src="assets/images/sanitary-worker-segregation-cart.jpg" alt="Sanitary Worker Segregated Collection Cart" class="w-full h-36 object-cover rounded-lg">
+                <div class="text-[11px] font-semibold text-slate-700 p-1.5">Dual-bin collection handcart</div>
+              </div>
+              <div class="bg-white p-2 rounded-xl border border-slate-200">
+                <img src="assets/images/sanitary-worker-segregation-collection.jpg" alt="Sanitary Worker Field Operations" class="w-full h-36 object-cover rounded-lg">
+                <div class="text-[11px] font-semibold text-slate-700 p-1.5">Direct household collection</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 10. ADMINISTRATION & INSTITUTIONAL ENGAGEMENT             -->
+    <!-- ========================================================= -->
+    <section id="administration" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Governance & Civil Leadership</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Institutional Leadership & Field Governance
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Active field presence by Bahawalpurâ€™s civil administration ensured operational accountability and created the high-level evidence required for provincial scaling.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <!-- Card 1: DC Bahawalpur Field Visit (Exact caption required) -->
+          <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <img src="assets/images/dc-bahawalpur-field-visit.jpeg" alt="DC Bahawalpur Field Visit to UC-14" class="w-full h-52 object-cover">
+              <div class="p-6">
+                <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider">Civil Oversight</span>
+                <h3 class="text-base font-bold text-brand-950 mt-1 mb-2">DC Bahawalpur Field Visit</h3>
+                <p class="text-xs text-slate-600 leading-relaxed font-serif italic text-slate-700">
+                  â€œField visit of the Deputy Commissioner Bahawalpur to UC-14 to review the Two-Bin Segregation Pilot, household-level implementation, community engagement and segregated collection activities.â€
+                </p>
+              </div>
+            </div>
+            <div class="px-6 pb-6 text-[11px] text-slate-400">
+              Focus: Ground verification of beat zoning and citizen adherence.
+            </div>
+          </div>
+
+          <!-- Card 2: CIT & CEO BWMC Coordination (Exact caption required) -->
+          <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <img src="assets/images/cit-bwmc-ceo-meeting.jpeg" alt="CIT & CEO BWMC Coordination Meeting" class="w-full h-52 object-cover">
+              <div class="p-6">
+                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Operational Alignment</span>
+                <h3 class="text-base font-bold text-brand-950 mt-1 mb-2">CIT & CEO BWMC Coordination</h3>
+                <p class="text-xs text-slate-600 leading-relaxed font-serif italic text-slate-700">
+                  â€œCoordination meeting with CIT and CEO BWMC, Mr. M. Naeem Akhtar, to review implementation progress, community engagement, operational requirements and next steps.â€
+                </p>
+              </div>
+            </div>
+            <div class="px-6 pb-6 text-[11px] text-slate-400">
+              Focus: Vehicle scheduling, bin stocks, and worker incentive logistics.
+            </div>
+          </div>
+
+          <!-- Card 3: ADC General Progress Briefing -->
+          <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <img src="assets/images/adc-general-briefing.jpg" alt="ADC General Progress Briefing" class="w-full h-52 object-cover">
+              <div class="p-6">
+                <span class="text-[11px] font-bold text-indigo-700 uppercase tracking-wider">Divisional Reporting</span>
+                <h3 class="text-base font-bold text-brand-950 mt-1 mb-2">ADC General Progress Briefing</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Final progress update briefed to the Additional Deputy Commissioner (General) Bahawalpur, following the comprehensive campaign update submitted to the Commissioner, Bahawalpur Division.
+                </p>
+              </div>
+            </div>
+            <div class="px-6 pb-6 text-[11px] text-slate-400">
+              Focus: Consolidating outreach metrics and setting replication terms.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 11. EVIDENCE & IMPACT DASHBOARD (VERIFIED FIGURES ONLY)   -->
+    <!-- ========================================================= -->
+    <section id="impact" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Empirical Field Records</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Evidence & Verified Impact Dashboard
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            In strict compliance with development-sector auditing standards, every statistic presented below is drawn directly from verified field logbooks and signed progress reports.
+          </p>
+        </div>
+
+        <!-- Animated KPI Counters -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+            <div class="text-3xl sm:text-4xl font-extrabold text-sky-700 font-serif stat-count" data-target="10109">0</div>
+            <div class="text-xs font-bold text-slate-700 uppercase mt-2">People Reached (SBCC)</div>
+            <div class="text-[11px] text-slate-400 mt-1">150 core sessions across Bahawalpur</div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+            <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 font-serif stat-count" data-target="6908">0</div>
+            <div class="text-xs font-bold text-slate-700 uppercase mt-2">Women Participants</div>
+            <div class="text-[11px] text-slate-400 mt-1">~70% (68.3%) of community attendance</div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+            <div class="text-3xl sm:text-4xl font-extrabold text-brand-900 font-serif stat-count" data-target="1035">0</div>
+            <div class="text-xs font-bold text-slate-700 uppercase mt-2">Two-Bin Sets Distributed</div>
+            <div class="text-[11px] text-slate-400 mt-1">Directly to UC-14 households</div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+            <div class="text-3xl sm:text-4xl font-extrabold text-amber-600 font-serif stat-count" data-target="22639" data-prefix="Rs. ">0</div>
+            <div class="text-xs font-bold text-slate-700 uppercase mt-2">Worker Incentives Paid</div>
+            <div class="text-[11px] text-slate-400 mt-1">From 550+ kg recorded recyclables</div>
+          </div>
+
+        </div>
+
+        <!-- Interactive Visual Charts (Chart.js) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Demographic Balance</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-4">Gender Participation (SBCC Sessions)</h3>
+            <div class="h-56 relative">
+              <canvas id="chart-gender"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-500 text-center mt-3">Total: 10,109 individuals (6,908 female / 3,184 male)</div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Operational Facilitation</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-4">Reach by Facilitation Teams</h3>
+            <div class="h-56 relative">
+              <canvas id="chart-teams"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-500 text-center mt-3">Team A: 5,001 reached &bull; Team B: 5,108 reached</div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">UC-14 Pilot Yield</div>
+            <h3 class="text-sm font-bold text-slate-900 mb-4">Recyclable Material Recovered (kg)</h3>
+            <div class="h-56 relative">
+              <canvas id="chart-recyclables"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-500 text-center mt-3">Plastic: 184.5 kg &bull; Cardboard (Gatta): 365.5 kg</div>
+          </div>
+
+        </div>
+
+        <!-- Multiple Stakeholder Groups Verification -->
+        <div class="bg-white rounded-xl p-6 border border-slate-200">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Engaged Stakeholder Matrix</div>
+          <div class="flex flex-wrap gap-2 text-xs font-medium text-slate-700">
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">115 Educational Institutions</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">35 Mohalla Community Centers</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">1,300+ Residential Households</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">91 Commercial Outlets</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Transgender Community Groups</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Frontline Sanitary Workers & Mates</span>
+            <span class="bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Bahawalpur Civil Administration</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 12. MAP & FIELD COVERAGE: INTERACTIVE GIS INTEGRATION     -->
+    <!-- ========================================================= -->
+    <section id="map" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          <div>
+            <span class="badge-dev badge-dev-blue mb-2">Spatial Coverage & Beat Mapping</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+              Interactive GIS Map: Bahawalpur & UC-14
+            </h2>
+            <p class="text-sm text-slate-600 mt-1 max-w-2xl">
+              Explore key pilot zones, administrative centers, educational hubs, and beat divisions. Toggle filters to inspect specific field locations.
+            </p>
+          </div>
+
+          <!-- Map Filter Controls -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="map-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white shadow-sm transition" data-filter="all">All Locations</button>
+            <button class="map-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 transition border border-slate-200" data-filter="pilot">UC-14 Pilot Beats</button>
+            <button class="map-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 transition border border-slate-200" data-filter="admin">Governance Hubs</button>
+            <button class="map-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 transition border border-slate-200" data-filter="school">Model Schools</button>
+          </div>
+        </div>
+
+        <!-- The Map Container -->
+        <div class="relative rounded-2xl overflow-hidden border border-slate-200 shadow-md">
+          <div id="bahawalpur-map"></div>
+          
+          <!-- Legend Box -->
+          <div class="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-sm p-3.5 rounded-xl border border-slate-200 shadow-lg text-xs space-y-1.5 hidden sm:block">
+            <div class="font-bold text-slate-800 text-[11px] uppercase tracking-wider mb-1">Map Legend</div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 border border-white"></span>
+              <span>UC-14 Segregation Beat Zones</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-slate-800 border border-white"></span>
+              <span>Administrative Offices (DC/BWMC)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-amber-500 border border-white"></span>
+              <span>Outreach Model Schools</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Official Mapping Sheets Direct Lightbox Links -->
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-slate-900">UC-14 Combined Beat Mapping (~101 Acres)</div>
+              <div class="text-[11px] text-slate-500">Official GIS allocation sheet for Mohammadia & Trust Colonies</div>
+            </div>
+            <button class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs font-semibold text-sky-700 hover:bg-sky-50 shadow-sm" onclick="document.querySelector('#gallery [data-title*=\'Beat Mapping\']')?.click()">
+              View High-Res
+            </button>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-slate-900">Spatial Coverage Map (150 Sessions)</div>
+              <div class="text-[11px] text-slate-500">Geographic footprint of SBCC outreach across greater Bahawalpur</div>
+            </div>
+            <button class="px-3 py-1.5 bg-white border border-slate-300 rounded text-xs font-semibold text-sky-700 hover:bg-sky-50 shadow-sm" onclick="document.querySelector('#gallery [data-title*=\'Spatial Coverage\']')?.click()">
+              View High-Res
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 13. GALLERY: CATEGORIZED & FILTERABLE LIGHTBOX            -->
+    <!-- ========================================================= -->
+    <section id="gallery" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10">
+          <span class="badge-dev badge-dev-blue mb-3">Authentic Photographic Archives</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Documented Field Gallery
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Every photograph is verified real project evidence, capturing moments from documentary production and school sessions to door-to-door distribution and high-level administrative reviews.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="mb-8 space-y-4">
+          <div class="max-w-md mx-auto">
+            <div class="relative">
+              <input type="text" id="gallery-search" placeholder="Search gallery by keyword (e.g., DC, School, Women, Workers, Map)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 bg-white shadow-sm">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="flex flex-wrap items-center justify-center gap-1.5">
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-sky-600 text-white shadow-sm transition" data-category="all">All (30+)</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="pre-inception">Pre-Inception Documentary</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="schools">School Outreach</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="community">Community Sessions</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="women">Womenâ€™s Participation</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="transgender">Transgender Engagement</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="warriors">Zero Waste Warriors</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="pencil">Eco-Pencil Workshops</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="d2d">UC-14 Door-to-Door</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="workers">Sanitary Workers</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="admin">DC & Administration</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="replication">Provincial Scale</button>
+          </div>
+        </div>
+
+        <!-- The Gallery Grid -->
+        <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+          <!-- 1 -->
+          <div class="gallery-card cursor-pointer" data-category="pre-inception" data-category-label="Pre-Inception Documentary" data-title="Film Screening as a Cornerstone Strategy" data-caption="Community screening of the 30-minute documentary introducing the Two-Bin System (Blue for Dry, Green for Wet) across Bahawalpur.">
+            <img src="assets/images/film-screening-cornerstone.png" alt="Film Screening" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Pre-Inception</span>
+              <div class="text-xs font-bold leading-snug">Film Screening as a Cornerstone Strategy</div>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="gallery-card cursor-pointer" data-category="pre-inception" data-category-label="Two-Bin Concept" data-title="Two-Bin Concept on Collection Vehicles" data-caption="Illustrated design introducing wet and dry waste compartments on BWMC collection vehicles branded with ADB and UNICEF identities.">
+            <img src="assets/images/two-bin-system-concept.jpg" alt="Two-Bin Concept" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Two-Bin System</span>
+              <div class="text-xs font-bold leading-snug">Two-Bin Vehicle Concept</div>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="School Outreach" data-title="School Awareness Sessions (GGS Canal & Abbasia)" data-caption="School outreach sessions #1 at G.G.S Canal (31 Oct 2025) and #2 at Abbasia B.H.S.S (3 Nov 2025).">
+            <img src="assets/images/school-sessions-ggs-abbasia.jpg" alt="School Awareness Sessions" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Outreach</span>
+              <div class="text-xs font-bold leading-snug">GGS Canal & Abbasia Sessions</div>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="gallery-card cursor-pointer" data-category="schools warriors" data-category-label="Zero Waste Warriors" data-title="Zero Waste Warriors Student Ambassadors" data-caption="Student ambassadors at the Bahawalpur flagship campus appointed to champion waste segregation.">
+            <img src="assets/images/zero-waste-warriors.jpg" alt="Zero Waste Warriors" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Ambassadors</span>
+              <div class="text-xs font-bold leading-snug">Zero Waste Warriors</div>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="gallery-card cursor-pointer" data-category="pencil women" data-category-label="Eco-Friendly Pencil Workshop" data-title="Eco-Friendly Pencil Making: Women's Group" data-caption="Women participants hand-rolling discarded newspaper into functioning graphite pencils.">
+            <img src="assets/images/eco-pencil-workshop-women.jpg" alt="Eco-Friendly Pencil Workshop Women" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Women & Recycling</span>
+              <div class="text-xs font-bold leading-snug">Eco-Pencil Workshop (Women)</div>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="gallery-card cursor-pointer" data-category="pencil schools" data-category-label="Eco-Friendly Pencil Workshop" data-title="Eco-Friendly Pencil Making: Student Session" data-caption="School students participating in waste-upcycling practical exercises.">
+            <img src="assets/images/eco-pencil-workshop-students.jpg" alt="Eco-Friendly Pencil Workshop Students" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Youth Upcycling</span>
+              <div class="text-xs font-bold leading-snug">Eco-Pencil Workshop (Students)</div>
+            </div>
+          </div>
+
+          <!-- 7 -->
+          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="Awareness Tools" data-title="Students with Waste Segregation Awareness Fans" data-caption="Students holding wet/dry bilingual reminder fans distributed during school sessions.">
+            <img src="assets/images/students-awareness-fans.jpg" alt="Students with Awareness Fans" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">IEC Material</span>
+              <div class="text-xs font-bold leading-snug">Waste Segregation Awareness Fans</div>
+            </div>
+          </div>
+
+          <!-- 8 -->
+          <div class="gallery-card cursor-pointer" data-category="d2d community" data-category-label="Household Practice" data-title="Household Reflections & Everyday Practice" data-caption="466+ participants submitted photo documentation of daily wet/dry segregation in their homes.">
+            <img src="assets/images/household-two-bin-practice.jpg" alt="Household Practice" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Household Practice</span>
+              <div class="text-xs font-bold leading-snug">466+ Participant Verifications</div>
+            </div>
+          </div>
+
+          <!-- 9 -->
+          <div class="gallery-card cursor-pointer" data-category="d2d" data-category-label="UC-14 Beat Mapping" data-title="UC-14 Combined Beat Mapping Sheet" data-caption="Official GIS parcel mapping for Trust Colony (~57 Acres) & Mohammadia Colony (~44 Acres) across ~101 Acres.">
+            <img src="assets/images/uc14-beat-mapping.jpg" alt="UC-14 Beat Mapping" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">GIS Beat Map</span>
+              <div class="text-xs font-bold leading-snug">UC-14 Beat Mapping (~101ac)</div>
+            </div>
+          </div>
+
+          <!-- 10 -->
+          <div class="gallery-card cursor-pointer" data-category="community" data-category-label="Spatial Coverage" data-title="Spatial Coverage: 150 Sessions Across Bahawalpur" data-caption="Geographical distribution map of 150 SBCC sessions delivered by Team A and Team B.">
+            <img src="assets/images/spatial-coverage-150-sessions-map.jpg" alt="Spatial Coverage Map" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Outreach Footprint</span>
+              <div class="text-xs font-bold leading-snug">150 Sessions Spatial Map</div>
+            </div>
+          </div>
+
+          <!-- 11 -->
+          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="Institutional Coordination" data-title="CIT and CEO BWMC Mr. M. Naeem Akhtar" data-caption="Coordination meeting with CIT and CEO BWMC, Mr. M. Naeem Akhtar, to review UC-14 implementation progress.">
+            <img src="assets/images/cit-bwmc-ceo-meeting.jpeg" alt="CIT and CEO BWMC Meeting" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Municipal Alignment</span>
+              <div class="text-xs font-bold leading-snug">CIT & CEO BWMC Review</div>
+            </div>
+          </div>
+
+          <!-- 12 -->
+          <div class="gallery-card cursor-pointer" data-category="d2d community" data-category-label="Community Mobilization" data-title="Mohammadia Colony Community Meeting (15 July 2026)" data-caption="Neighborhood mobilization meeting held in Mohammadia Colony on 15 July 2026.">
+            <img src="assets/images/community-mobilization-mohammadia.jpg" alt="Community Mobilization" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Mobilization</span>
+              <div class="text-xs font-bold leading-snug">Mohammadia Colony Mobilization</div>
+            </div>
+          </div>
+
+          <!-- 13 -->
+          <div class="gallery-card cursor-pointer" data-category="d2d" data-category-label="Field Distribution" data-title="Door-to-Door Bin Distribution in UC-14" data-caption="Field team handing over Two-Bin sets and conducting kitchen-level orientation.">
+            <img src="assets/images/door-to-door-distribution.jpg" alt="Door to door distribution" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Field Rollout</span>
+              <div class="text-xs font-bold leading-snug">D2D Bin Distribution</div>
+            </div>
+          </div>
+
+          <!-- 14 -->
+          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="Field Inspection" data-title="DC Bahawalpur Field Visit to UC-14" data-caption="Field visit of Deputy Commissioner Bahawalpur to UC-14 reviewing household-level implementation and collection.">
+            <img src="assets/images/dc-bahawalpur-field-visit.jpeg" alt="DC Bahawalpur Field Visit" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">DC Field Visit</span>
+              <div class="text-xs font-bold leading-snug">DC Bahawalpur Inspection</div>
+            </div>
+          </div>
+
+          <!-- 15 -->
+          <div class="gallery-card cursor-pointer" data-category="workers" data-category-label="Frontline Recognition" data-title="Recognition of Sanitary Workers (13 August 2026)" data-caption="Formal recognition ceremony for sanitary workers and supervisors in Trust Colony.">
+            <img src="assets/images/sanitary-workers-recognition.jpg" alt="Recognition of Sanitary Workers" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Frontline Workers</span>
+              <div class="text-xs font-bold leading-snug">Sanitary Worker Recognition</div>
+            </div>
+          </div>
+
+          <!-- 16 -->
+          <div class="gallery-card cursor-pointer" data-category="replication" data-category-label="Provincial Mandate" data-title="Chief Minister Punjab Suthra Punjab Directive" data-caption="Official communication by Punjab Chief Minister Maryam Nawaz Sharif (8 August 2026) regarding province-wide replication of the two-bin wet/dry model.">
+            <img src="assets/images/cm-maryam-nawaz-direction-tweet.png" alt="CM Punjab Directive" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Provincial Mandate</span>
+              <div class="text-xs font-bold leading-snug">CM Punjab Scaling Directive</div>
+            </div>
+          </div>
+
+          <!-- 17: Transgender Community Workshop -->
+          <div class="gallery-card cursor-pointer" data-category="transgender community" data-category-label="Inclusive Sessions" data-title="Transgender Community Awareness Session" data-caption="Dedicated session held with transgender community members in Bahawalpur on sustainable solid waste management.">
+            <img src="assets/images/transgender-community-session.jpg" alt="Transgender Community Awareness" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
+              <div class="text-xs font-bold leading-snug">Transgender Awareness Session</div>
+            </div>
+          </div>
+
+          <!-- 18: School Campaign Assembly -->
+          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="School Campaign" data-title="School Morning Assembly Segregation Orientation" data-caption="Students being briefed on the Two-Bin System during school morning assembly.">
+            <img src="assets/images/school-campaign-assembly.jpg" alt="School Assembly Orientation" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Assembly</span>
+              <div class="text-xs font-bold leading-snug">Assembly Waste Briefing</div>
+            </div>
+          </div>
+
+          <!-- 19: DC Visit Two-Bin Check -->
+          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="DC Visit" data-title="DC Inspects Household Two-Bin Segregation" data-caption="Deputy Commissioner Bahawalpur directly inspecting household bins in UC-14 to verify source segregation.">
+            <img src="assets/images/dc-visit-two-bin-check.jpg" alt="DC Inspects Household Bins" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">DC Inspection</span>
+              <div class="text-xs font-bold leading-snug">Household Bin Inspection</div>
+            </div>
+          </div>
+
+          <!-- 20: Commissioner Bahawalpur Division Briefing -->
+          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="Divisional Briefing" data-title="Progress Briefing to Commissioner Bahawalpur Division" data-caption="Comprehensive update presented to Commissioner Bahawalpur Division on the SBCC campaign.">
+            <img src="assets/images/commissioner-briefing.jpg" alt="Commissioner Briefing" class="gallery-thumbnail w-full">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Governance</span>
+              <div class="text-xs font-bold leading-snug">Commissioner Division Briefing</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Lightbox Modal Container -->
+    <div id="gallery-lightbox-modal" class="modal-backdrop no-print">
+      <div class="modal-dialog overflow-hidden">
+        <div class="relative bg-slate-950 flex items-center justify-center p-2 min-h-[300px]">
+          <img id="lightbox-image" src="" alt="" class="max-h-[70vh] w-auto max-w-full object-contain">
+          <button id="lightbox-close-btn" class="absolute top-4 right-4 p-2 bg-slate-800/80 hover:bg-slate-700 text-white rounded-full">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="p-6 bg-white">
+          <div class="flex items-center justify-between gap-4 mb-2">
+            <span id="lightbox-category" class="text-xs font-bold text-sky-700 uppercase tracking-wider">Category</span>
+            <a id="lightbox-download-link" href="#" download class="text-xs font-semibold text-sky-600 hover:text-sky-800 flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              Download Full-Resolution
+            </a>
+          </div>
+          <h3 id="lightbox-title" class="text-lg font-bold text-slate-900 mb-1">Image Title</h3>
+          <p id="lightbox-caption" class="text-xs sm:text-sm text-slate-600 leading-relaxed">Image Caption</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 14. DOCUMENTARY & VIDEO HUB                               -->
+    <!-- ========================================================= -->
+    <section id="video" data-slide="true" class="py-20 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Audiovisual Documentation</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Documentary & Field Video Archives
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            The narrative structure of the project film: <em>Existing Situation &rarr; Awareness &rarr; Community Engagement &rarr; UC-14 &rarr; Practice &rarr; Replication</em>.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Main Player -->
+          <div class="lg:col-span-8 bg-slate-900 rounded-2xl overflow-hidden shadow-xl border border-slate-800">
+            <div class="video-player-container aspect-video w-full bg-black relative">
+              <video id="featured-video-player" controls class="w-full h-full object-contain" poster="assets/images/household-two-bin-practice.jpg">
+                <source src="assets/videos/uc14-bin-usage-clip.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+            <div class="p-6 bg-slate-900 text-white">
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Field Documentation Clip</span>
+              <h3 id="current-video-title" class="text-xl font-bold mt-1 mb-2">UC-14 Household Bin Usage & Citizen Feedback</h3>
+              <p id="current-video-desc" class="text-xs text-slate-300 leading-relaxed">
+                Authentic field clip capturing householders in UC-14 sorting organic waste into green containers and presenting recyclables to BWMC frontline collectors.
+              </p>
+            </div>
+          </div>
+
+          <!-- Video Playlist Switcher -->
+          <div class="lg:col-span-4 space-y-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Select Field Video</div>
+
+            <div class="video-playlist-item p-3.5 rounded-xl border border-sky-500 bg-sky-50 cursor-pointer transition hover:bg-slate-50" data-src="assets/videos/uc14-bin-usage-clip.mp4" data-title="UC-14 Household Bin Usage & Citizen Feedback" data-desc="Authentic field clip capturing householders in UC-14 sorting organic waste into green containers and presenting recyclables to BWMC frontline collectors.">
+              <div class="flex items-center gap-3">
+                <span class="text-sky-600 text-lg">â–¶</span>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Clip 1: Household Bin Practice</div>
+                  <div class="text-[11px] text-slate-500">UC-14 Citizen Action & Sorting</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="assets/videos/uc14-door-to-door-clip.mp4" data-title="Door-to-Door Social Mobilization Team in Action" data-desc="City Implementation Team (CIT) social mobilizers visiting homes in Trust Colony, demonstrating two-bin placement in kitchens.">
+              <div class="flex items-center gap-3">
+                <span class="text-sky-600 text-lg">â–¶</span>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Clip 2: D2D Social Mobilizers</div>
+                  <div class="text-[11px] text-slate-500">Lane-by-lane household orientation</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="assets/videos/household-segregation-clip.mp4" data-title="Everyday Segregation in Domestic Routine" data-caption="Direct citizen recording showing wet organic food scrap separation in the household kitchen.">
+              <div class="flex items-center gap-3">
+                <span class="text-sky-600 text-lg">â–¶</span>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Clip 3: Everyday Domestic Sorting</div>
+                  <div class="text-[11px] text-slate-500">Citizen verification in kitchen</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="assets/videos/sanitary-collection-clip.mp4" data-title="Sanitary Worker Segregated Collection Cart" data-desc="BWMC sanitary worker collecting dry cardboard and plastic separately using the partitioned waste cart.">
+              <div class="flex items-center gap-3">
+                <span class="text-sky-600 text-lg">â–¶</span>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Clip 4: Segregated Collection Cart</div>
+                  <div class="text-[11px] text-slate-500">BWMC beat worker collecting dry stream</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Full Documentary Overview Box -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 mt-4 text-xs text-slate-600 space-y-2">
+              <div class="font-bold text-slate-800">Full 30-Min Master Documentary:</div>
+              <p>
+                <em>"Film for Change: Transforming 10,000 Lives Through Stories"</em> (Bahawalpur & Rawalpindi). Featuring celebrity ambassador Sarwat Gilani and local community voices. Available on project archives.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 15. KNOWLEDGE & RESOURCES: DOCUMENT LIBRARY               -->
+    <!-- ========================================================= -->
+    <section id="resources" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <span class="badge-dev badge-dev-blue mb-3">Institutional Repository</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Knowledge & Resources Center
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Access verified project publications, signed partner agreements, SBCC manuals, training flipbooks, and field monitoring progress briefs.
+          </p>
+          
+          <!-- Search & Filter Filter -->
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <input type="text" id="doc-search-input" placeholder="Search publications by title or category..." class="px-4 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-500 w-72">
+            <button class="doc-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white" data-type="all">All Documents</button>
+            <button class="doc-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200" data-type="agreement">Agreements</button>
+            <button class="doc-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200" data-type="sbcc">SBCC Toolkits</button>
+            <button class="doc-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200" data-type="report">Progress Reports</button>
+          </div>
+        </div>
+
+        <!-- Document Cards Grid -->
+        <div id="documents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- 1: Signed LoU -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="agreement">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-blue text-[10px]">Legal Agreement</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 645 KB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">Strategic Partnership: Signed LoU ADB & UNICEF</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Letter of Understanding signed 5 March 2024 between ADB Country Director Yong Ye and UNICEF Representative Abdullah Fadil for WASH and solid waste cooperation.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/Signed_LoU_ADB_UNICEF_2024.pdf" data-doc-title="Signed LoU ADB & UNICEF (5 March 2024)">Preview PDF</button>
+              <a href="assets/docs/Signed_LoU_ADB_UNICEF_2024.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+          <!-- 2: Conversation Guide -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="sbcc">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-green text-[10px]">SBCC Manual</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 3.5 MB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">Waste Segregation Conversation Guide (A4)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Field facilitation manual equipped with conversational prompts, objection-handling scripts, and behavioral nudges for social mobilizers visiting homes.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/Waste_Segregation_Conversation_Guide.pdf" data-doc-title="Waste Segregation Conversation Guide (A4)">Preview PDF</button>
+              <a href="assets/docs/Waste_Segregation_Conversation_Guide.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+          <!-- 3: Training Flipbook -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="sbcc">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-green text-[10px]">Training Tool</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 10.2 MB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">Waste Segregation Flipbook (A3)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                High-contrast illustrated visual aid utilized by outreach facilitators during community gatherings, school assemblies, and women's group sessions.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/Waste_Segregation_Flipbook.pdf" data-doc-title="Waste Segregation Flipbook (A3)">Preview PDF</button>
+              <a href="assets/docs/Waste_Segregation_Flipbook.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+          <!-- 4: Household Checklist -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="sbcc">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-green text-[10px]">Household Tool</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 316 KB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">Waste Segregation Checklist (A3)</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Household refrigerator/wall checklist categorizing wet kitchen waste versus dry recyclables in Urdu and English.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/Waste_Segregation_Checklist.pdf" data-doc-title="Waste Segregation Checklist">Preview PDF</button>
+              <a href="assets/docs/Waste_Segregation_Checklist.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+          <!-- 5: Institutional Presentation -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="report">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-amber text-[10px]">Governance Briefing</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 2.1 MB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">DREAMS Presentation to DC Bahawalpur</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Official presentation delivered on 22 December 2025 detailing the municipal ISWM roadmap, infrastructure milestones, and UC-14 design.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/DREAMS_DC_Presentation_Dec2025.pdf" data-doc-title="DREAMS Presentation to DC Bahawalpur">Preview PDF</button>
+              <a href="assets/docs/DREAMS_DC_Presentation_Dec2025.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+          <!-- 6: UC-14 Progress Report -->
+          <div class="doc-card bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between" data-type="report">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="badge-dev badge-dev-amber text-[10px]">Field Monitoring</span>
+                <span class="text-xs font-bold text-slate-400">PDF &bull; 4.4 KB</span>
+              </div>
+              <h3 class="text-base font-bold text-brand-950 mb-1.5">UC-14 Field Progress Report</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                Verified monitoring data prepared by Maidah Khan (Lead - CIT Social Mobilizers), documenting daily household counts and recyclable sales.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+              <button class="preview-pdf-btn text-xs font-bold text-sky-700 hover:text-sky-900" data-pdf-url="assets/docs/UC14_Progress_Report.pdf" data-doc-title="UC-14 Field Progress Report">Preview PDF</button>
+              <a href="assets/docs/UC14_Progress_Report.pdf" download class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700">Download</a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PDF Viewer Modal -->
+    <div id="pdf-viewer-modal" class="modal-backdrop no-print">
+      <div class="modal-dialog h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
+          <h3 id="pdf-modal-title" class="text-sm font-bold text-slate-900 truncate">Document Preview</h3>
+          <button id="pdf-modal-close" class="p-1 text-slate-400 hover:text-slate-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="flex-1 bg-slate-100">
+          <iframe id="pdf-frame" src="about:blank" class="w-full h-full border-0"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 16. REPLICATION: FROM UC-14 TO WIDER REPLICATION          -->
+    <!-- ========================================================= -->
+    <section id="replication" data-slide="true" class="py-24 bg-white border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="max-w-4xl mx-auto text-center mb-16">
+          <span class="badge-dev badge-dev-amber mb-3">Policy Scale-Up</span>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-brand-950 font-serif tracking-tight">
+            From UC-14 to Wider Replication
+          </h2>
+          <p class="text-lg text-slate-600 mt-4 leading-relaxed">
+            How a neighbourhood pilot in southern Punjab generated verifiable empirical evidence, engaged high-level provincial leadership, and was mandated for scale across all Punjab municipal companies.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          
+          <div class="lg:col-span-6 space-y-6">
+            <h3 class="text-2xl font-bold text-brand-950 font-serif">The Policy Uptake Trajectory</h3>
+            <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+              <p>
+                The tangible successes in UC-14â€”where 1,035 households segregated waste and frontline sanitary workers were rewarded through direct recyclable revenue sharingâ€”drew immediate local administrative attention.
+              </p>
+              <p>
+                The model was presented to the <strong>Deputy Commissioner Bahawalpur</strong>, who conducted extensive ground inspections and briefed the <strong>Chief Minister of Punjab</strong> on its design, operational mechanics, and community adoption.
+              </p>
+              <p class="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl text-emerald-950 font-medium">
+                Following this briefing, the Chief Minister directed the <strong>replication of the UC-14 Two-Bin Segregation Model across Punjab</strong>, recognizing it as a proven, practical, and scalable approach to household source segregation.
+              </p>
+            </div>
+          </div>
+
+          <!-- Official Documented Evidence Screenshot -->
+          <div class="lg:col-span-6">
+            <div class="bg-slate-900 p-2 rounded-2xl border-4 border-slate-800 shadow-2xl">
+              <img src="assets/images/cm-maryam-nawaz-direction-tweet.png" alt="Official Screenshot: Chief Minister Punjab Direction on X (8 August 2026)" class="w-full rounded-xl object-contain shadow cursor-pointer hover:opacity-95 transition" onclick="document.querySelector('#gallery [data-title*=\'Chief Minister\']')?.click()">
+              <div class="p-4 bg-slate-900 text-white">
+                <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+                  <span>Documented Evidence &bull; Official Communication</span>
+                  <span>8 August 2026</span>
+                </div>
+                <div class="text-sm font-bold">Punjab Chief Minister Maryam Nawaz Sharif â€” Official Communication</div>
+                <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+                  Directing the province-wide "Suthra Punjab" door-to-door waste collection and segregation drive, recognizing compliant households as <em>"Environment-Friendly Homes"</em> with wet/dry segregation.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 17. LESSONS LEARNED: 6 VISUAL INTERACTIVE CARDS           -->
+    <!-- ========================================================= -->
+    <section id="lessons" data-slide="true" class="py-20 bg-slate-50 border-b border-slate-200">
+      <div class="content-container">
+        
+        <div class="text-center max-w-3xl mx-auto mb-14">
+          <span class="badge-dev badge-dev-blue mb-3">Field Knowledge</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-950 font-serif tracking-tight">
+            Six Critical Lessons Learned
+          </h2>
+          <p class="text-base text-slate-600 mt-2">
+            Strategic insights for international development partners, municipal utilities, and government officials replicating source segregation programs.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Card 1 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Lesson 1</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">Awareness Must Lead to Practice</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Public education campaigns fail if households lack the physical infrastructure to act. The transition succeeds only when information is immediately accompanied by color-coded bins and predictable collection schedules.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Lesson 2</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">Behaviour Change Requires Continuity</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Habit formation is non-linear. Households typically regress to mixed dumping within 10 days if not reinforced. Structured follow-up visits by social mobilizers in weeks 2, 4, and 6 ensure permanent adoption.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">Lesson 3</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">SBCC and Operations Must Work Together</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Behavioural communication and municipal fleet logistics must be synchronized down to the minute. If a sanitary worker mixes two segregated bins into one cart hopper, months of community trust are destroyed in seconds.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-amber-600 uppercase tracking-wider">Lesson 4</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">Frontline Workers Are Essential</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Sanitary workers are not mere passive collectors; they are the primary face-to-face ambassadors of the municipal company. Providing them with training, protective gear, and recyclable incentive revenue creates enduring motivation.
+            </p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Lesson 5</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">Local Operational Realities Matter</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Generic national templates do not work in diverse mohallas. Tight alleys require specialized handcarts; high-density commercial markets require evening shifts; residential zones need early morning timing before cooking begins.
+            </p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <span class="text-xs font-bold text-purple-700 uppercase tracking-wider">Lesson 6</span>
+            <h3 class="text-lg font-bold text-brand-950 mt-1 mb-3">Recognition and Peer Influence Reinforce Behaviour</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Public affirmation of compliant households (such as the "Environment-Friendly Home" recognition) creates positive social competition, prompting neighbors to emulate successful waste sorting.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 18. FINAL CLOSING CHAPTER                                 -->
+    <!-- ========================================================= -->
+    <section id="closing" data-slide="true" class="py-24 bg-white">
+      <div class="content-container">
+        
+        <div class="max-w-4xl mx-auto text-center">
+          <span class="badge-dev badge-dev-blue mb-4">Strategic Conclusion</span>
+          <h2 class="text-4xl sm:text-5xl font-extrabold text-brand-950 font-serif tracking-tight mb-8">
+            From One Community to Wider Change
+          </h2>
+          
+          <div class="p-8 sm:p-12 bg-slate-50 border border-slate-200 rounded-3xl shadow-sm mb-12">
+            <blockquote class="text-xl sm:text-2xl font-serif text-slate-800 leading-relaxed italic mb-6">
+              â€œSuccessful waste segregation is not achieved through awareness alone. It requires continuous engagement, practical systems, community ownership and institutional support.â€
+            </blockquote>
+            
+            <div class="w-16 h-1 bg-gradient-to-r from-sky-600 to-emerald-600 mx-auto mb-8 rounded-full"></div>
+
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-slate-700">
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-sky-800">Awareness</span>
+              <span class="text-slate-400">&rarr;</span>
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-emerald-800">Practice</span>
+              <span class="text-slate-400">&rarr;</span>
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-teal-800">Ownership</span>
+              <span class="text-slate-400">&rarr;</span>
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-amber-800">Recognition</span>
+              <span class="text-slate-400">&rarr;</span>
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-indigo-800">Peer Influence</span>
+              <span class="text-slate-400">&rarr;</span>
+              <span class="bg-white px-3 py-1.5 rounded-lg border border-slate-200 text-purple-800 font-bold">Wider Change</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="text-2xl font-extrabold text-brand-950 font-serif">Bahawalpur UC-14</div>
+            <p class="text-base text-slate-600 italic">
+              A field experience in turning source segregation from an idea into community practice.
+            </p>
+          </div>
+
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-4 no-print">
+            <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="px-6 py-3 bg-brand-900 hover:bg-brand-950 text-white text-xs font-bold rounded-xl shadow transition">
+              Back to Overview &uarr;
+            </button>
+            <button onclick="window.print()" class="px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+              <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              Print Executive Brief
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- FOOTER                                                    -->
+  <!-- ========================================================= -->
+  <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-800 text-xs no-print">
+    <div class="content-container">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+        
+        <!-- Col 1 -->
+        <div class="space-y-4">
+          <div class="text-sm font-extrabold text-white tracking-wider uppercase">DREAMS-I Bahawalpur ISWM</div>
+          <p class="text-slate-400 leading-relaxed">
+            Developing Resilient Environments and Advancing Municipal Services - Phase I (Loan No. 4396-PAK). Funded by the Asian Development Bank (ADB).
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <img src="assets/images/logos/logo-punjab.png" alt="Punjab" class="h-8 w-auto">
+            <img src="assets/images/logos/logo-dreams.png" alt="DREAMS" class="h-8 w-auto">
+            <img src="assets/images/logos/logo-adb.jpeg" alt="ADB" class="h-7 w-auto rounded">
+            <img src="assets/images/logos/logo-unicef.png" alt="UNICEF" class="h-6 w-auto">
+          </div>
+        </div>
+
+        <!-- Col 2 -->
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Institutional Partners</div>
+          <ul class="space-y-2">
+            <li>Government of the Punjab</li>
+            <li>Asian Development Bank (ADB)</li>
+            <li>United Nations Children's Fund (UNICEF)</li>
+            <li>Bahawalpur Waste Management Company (BWMC)</li>
+            <li>Project Coordination Unit (PCU)</li>
+            <li>City Implementation Team (CIT)</li>
+          </ul>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Core Case Study Sections</div>
+          <ul class="space-y-2">
+            <li><a href="#about" class="hover:text-white transition">About DREAMS-I ISWM</a></li>
+            <li><a href="#two-bin" class="hover:text-white transition">Two-Bin Segregation Standard</a></li>
+            <li><a href="#uc14" class="hover:text-white transition">UC-14 Field Implementation</a></li>
+            <li><a href="#workers" class="hover:text-white transition">Sanitary Worker Incentive Model</a></li>
+            <li><a href="#impact" class="hover:text-white transition">Verified Metrics & Dashboard</a></li>
+            <li><a href="#replication" class="hover:text-white transition">Chief Minister Scaling Directive</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4 -->
+        <div class="space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-200">Official Citations & Reference</div>
+          <p class="text-slate-400 leading-relaxed">
+            Data drawn from DREAMS-I field monitoring reports, the ADB-UNICEF Strategic Partnership LoU (signed 5 March 2024), and official communications of the Chief Minister of Punjab.
+          </p>
+          <div class="pt-2">
+            <span class="inline-block bg-slate-800 text-slate-300 px-2.5 py-1 rounded text-[11px] font-mono">Loan No. 4396-PAK</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+        <div>
+          &copy; 2024â€“2026 Government of the Punjab &bull; Asian Development Bank &bull; UNICEF &bull; BWMC. All rights reserved.
+        </div>
+        <div class="text-right">
+          Designed for international conference, government review, and development sector showcase.
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Vendor JS -->
+  <script src="assets/vendor/leaflet.js"></script>
+  <script src="assets/vendor/chart.min.js"></script>
+  <!-- Main App Script -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
+
