@@ -43,11 +43,89 @@
   </script>
 
   <!-- Vendor CSS & Custom Styles -->
-  <link rel="stylesheet" href="leaflet.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700;6..72,800&family=Noto+Nastaliq+Urdu:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
+    /* ===== Core layout & components (replaces missing style.css) ===== */
+    body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: #f8fafc; }
+    .font-serif { font-family: "Newsreader", Georgia, serif; }
+    .font-urdu { font-family: "Noto Nastaliq Urdu", serif; line-height: 2.1; }
+    .content-container { width: 100%; max-width: 1240px; margin-left: auto; margin-right: auto; padding-left: 1.25rem; padding-right: 1.25rem; }
+    @media (min-width: 640px) { .content-container { padding-left: 2rem; padding-right: 2rem; } }
+    .shadow-xs { box-shadow: 0 1px 2px rgba(15, 23, 42, .06); }
+    .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+
+    .badge-dev { display: inline-flex; align-items: center; gap: .35rem; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .3rem .7rem; border-radius: 999px; border: 1px solid transparent; }
+    .badge-dev-blue { background: #e0f2fe; color: #075985; border-color: #bae6fd; }
+    .badge-dev-green { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .badge-dev-amber { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+
+    .pathway-step { display: inline-flex; align-items: center; padding: .6rem 1rem; border-radius: .75rem; border-width: 1px; font-size: .85rem; font-weight: 600; color: #0f172a; }
+
+    .bin-card-wet { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1px solid #a7f3d0; }
+    .bin-card-dry { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; }
+
+    .nav-link.is-active { color: #0369a1; background: #e0f2fe; }
+
+    /* Timeline filter */
+    .timeline-item.is-hidden { display: none; }
+
+    /* Photo carousel */
+    .media-carousel { position: relative; overflow: hidden; background: #0f172a; }
+    .carousel-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none; }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-slide { flex: 0 0 100%; scroll-snap-align: start; position: relative; margin: 0; }
+    .carousel-slide img { display: block; }
+    .carousel-slide figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.4rem .75rem .55rem; font-size: 11px; font-weight: 600; color: #fff; background: linear-gradient(to top, rgba(2, 6, 23, .8), transparent); }
+    .carousel-btn { position: absolute; top: 42%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 999px; border: 0; background: rgba(255, 255, 255, .88); color: #0f172a; font-size: 20px; line-height: 28px; text-align: center; cursor: pointer; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); z-index: 2; }
+    .carousel-prev { left: 8px; } .carousel-next { right: 8px; }
+    .carousel-dots { position: absolute; top: 8px; right: 10px; display: flex; gap: 4px; z-index: 2; }
+    .carousel-dots button { width: 7px; height: 7px; border-radius: 999px; border: 0; padding: 0; background: rgba(255, 255, 255, .55); cursor: pointer; }
+    .carousel-dots button.is-active { background: #fff; width: 16px; }
+
+    /* Gallery */
+    .gallery-card { position: relative; overflow: hidden; border-radius: .9rem; background: #0f172a; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(15, 23, 42, .08); }
+    .gallery-card.is-hidden { display: none; }
+    .gallery-thumbnail { display: block; height: 220px; object-fit: cover; transition: transform .4s ease; }
+    .gallery-card:hover .gallery-thumbnail { transform: scale(1.04); }
+    .gallery-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 2rem .9rem .8rem; color: #fff; background: linear-gradient(to top, rgba(2, 6, 23, .92), rgba(2, 6, 23, 0)); }
+    #gallery-empty { display: none; }
+
+    /* Modals */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 1rem; background: rgba(2, 6, 23, .82); backdrop-filter: blur(4px); }
+    .modal-backdrop.is-open { display: flex; }
+    .modal-dialog { width: 100%; max-width: 1000px; background: #fff; border-radius: 1rem; box-shadow: 0 25px 50px rgba(0, 0, 0, .35); }
+    #presentation-overlay.is-open { display: flex; }
+
+    /* Video playlist */
+    .video-playlist-item.is-active { border-color: #0ea5e9; background: #f0f9ff; }
+
+    /* Map */
+    #bahawalpur-map { height: 460px; width: 100%; z-index: 1; background: #e2e8f0; }
+    #map-note { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 20; display: none; }
+
+    /* Sorter */
+    .sort-item { cursor: grab; user-select: none; }
+    .sort-item.is-selected { outline: 2px solid #0ea5e9; }
+    .sort-item.is-done { opacity: .45; pointer-events: none; }
+    .dropzone-hover { transform: scale(1.01); box-shadow: 0 0 0 3px rgba(14, 165, 233, .25); }
+
+    @media print {
+      .no-print, header, .carousel-btn, .carousel-dots { display: none !important; }
+      section { break-inside: avoid; padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+      .carousel-track { overflow: visible; }
+    }
+
+  </style>
   <!-- Universal Auto-Fallback Script for Local File Paths -->
   <script>
     document.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && (e.target.getAttribute('src') || '').indexOf('https://wsrv.nl/') === 0) {
+        var m = e.target.getAttribute('src').match(/[?&]url=([^&]+)/); if (m) { e.target.src = decodeURIComponent(m[1]); } return;
+      }
       if (e.target && (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO')) {
         const src = e.target.getAttribute('src');
         if (src && !src.startsWith('http') && !src.startsWith('data:') && !e.target.dataset.triedFallback) {
@@ -151,7 +229,7 @@
           <a href="#inclusive" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Inclusion</a>
           <a href="#two-bin" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Two-Bin System</a>
           <a href="#uc14" class="nav-link py-1.5 px-3 bg-emerald-600 text-white rounded-md font-bold hover:bg-emerald-700 transition whitespace-nowrap shadow-xs flex items-center gap-1">
-            <span>â­ UC-14 Case Study</span>
+            <span>⭐ UC-14 Case Study</span>
           </a>
           <a href="#workers" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Workers</a>
           <a href="#administration" class="nav-link py-1.5 px-2.5 rounded-md hover:text-sky-700 hover:bg-slate-100 transition whitespace-nowrap">Governance</a>
@@ -286,50 +364,6 @@
           </div>
         </div>
 
-        <!-- Six Key Milestones Cards -->
-        <div class="mb-14">
-          <div class="text-xs uppercase tracking-wider font-extrabold text-slate-400 mb-4">Milestone Evolution</div>
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
-            
-            <div class="milestone-card border-t-4 border-sky-500">
-              <div class="text-[11px] font-bold text-sky-700 uppercase tracking-wider mb-1">2024</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">Pre-Inception Documentary</div>
-              <div class="text-xs text-slate-500 leading-relaxed">Documenting baseline mixed dumping & introducing the two-bin model.</div>
-            </div>
-
-            <div class="milestone-card border-t-4 border-sky-600">
-              <div class="text-[11px] font-bold text-sky-700 uppercase tracking-wider mb-1">2025</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">SBCC Outreach</div>
-              <div class="text-xs text-slate-500 leading-relaxed">150 core sessions reaching 10,109 individuals (~70% women).</div>
-            </div>
-
-            <div class="milestone-card border-t-4 border-emerald-500">
-              <div class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">UC-14</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">Two-Bin Pilot</div>
-              <div class="text-xs text-slate-500 leading-relaxed">101-acre pilot zone with 1,300+ households and 1,035 bin sets.</div>
-            </div>
-
-            <div class="milestone-card border-t-4 border-emerald-600">
-              <div class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">Community</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">Practice & Participation</div>
-              <div class="text-xs text-slate-500 leading-relaxed">Door-to-door social mobilization, schools, and inclusive engagement.</div>
-            </div>
-
-            <div class="milestone-card border-t-4 border-slate-700">
-              <div class="text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1">Administration</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">Institutional Engagement</div>
-              <div class="text-xs text-slate-500 leading-relaxed">DC Bahawalpur field visits, ADC briefings, and CIT-BWMC alignment.</div>
-            </div>
-
-            <div class="milestone-card border-t-4 border-amber-500">
-              <div class="text-[11px] font-bold text-amber-600 uppercase tracking-wider mb-1">Punjab</div>
-              <div class="text-sm font-bold text-slate-900 mb-1">Replication Direction</div>
-              <div class="text-xs text-slate-500 leading-relaxed">Chief Minister Punjab directive to scale the UC-14 model province-wide.</div>
-            </div>
-
-          </div>
-        </div>
-
         <!-- Prominent Visual Pathway Banner -->
         <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-md">
           <div class="text-center max-w-2xl mx-auto mb-6">
@@ -392,7 +426,7 @@
                 The Government of the Punjab is implementing <strong>DREAMS-I</strong> (<em>Developing Resilient Environments and Advancing Municipal Services - Phase I</em>), a major urban resilience initiative funded by the <strong>Asian Development Bank (ADB)</strong> under <strong>Loan No. 4396-PAK</strong>.
               </p>
               <p>
-                In Bahawalpur, the project is overhauling the municipal solid waste framework by shifting away from mixed-waste collection and open dumping toward a full <strong>Integrated Solid Waste Management (ISWM)</strong> pipelineâ€”encompassing segregated collection, a Material Recovery Facility (MRF), and an engineered sanitary landfill.
+                In Bahawalpur, the project is overhauling the municipal solid waste framework by shifting away from mixed-waste collection and open dumping toward a full <strong>Integrated Solid Waste Management (ISWM)</strong> pipeline—encompassing segregated collection, a Material Recovery Facility (MRF), and an engineered sanitary landfill.
               </p>
             </div>
 
@@ -569,7 +603,7 @@
               </div>
               <h3 class="text-xl font-bold text-brand-950 mb-2">Pre-Inception Documentary: Film for Change</h3>
               <p class="text-sm text-slate-600 mb-4 leading-relaxed">
-                Ahead of on-ground distribution, a 30-minute documentaryâ€”<em>"Film for Change: Transforming 10,000 Lives Through Stories"</em>â€”was commissioned. It recorded Bahawalpur's mixed waste dumping challenges and introduced the conceptual Two-Bin System (Blue for Dry, Green for Wet) with relatable community characters.
+                Ahead of on-ground distribution, a 30-minute documentary—<em>"Film for Change: Transforming 10,000 Lives Through Stories"</em>—was commissioned. It recorded Bahawalpur's mixed waste dumping challenges and introduced the conceptual Two-Bin System (Blue for Dry, Green for Wet) with relatable community characters.
               </p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image4.png" alt="Film Screening as a Cornerstone Strategy" class="rounded-lg border border-slate-200 object-cover w-full h-44">
@@ -616,7 +650,7 @@
             <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full bg-emerald-600 border-4 border-white shadow"></div>
             <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl p-6 shadow-sm">
               <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Phase 3 &bull; 2025â€“2026</span>
+                <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Phase 3 &bull; 2025–2026</span>
                 <span class="text-xs font-medium text-emerald-700">Practical Field Implementation</span>
               </div>
               <h3 class="text-xl font-bold text-brand-950 mb-2">UC-14 Two-Bin Segregation Pilot Rollout</h3>
@@ -643,8 +677,8 @@
                 Deputy Commissioner Bahawalpur conducted field inspections in UC-14, observing segregated cart collections and household compliance. The DC briefed the <strong>Chief Minister of Punjab</strong>, leading to an official directive to replicate the Bahawalpur UC-14 Two-Bin Segregation model across Punjab under "Suthra Punjab".
               </p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/dc-bahawalpur-field-visit.jpeg" alt="Field visit of DC Bahawalpur to UC-14" class="rounded-lg border border-slate-200 object-cover w-full h-44">
-                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/cm-maryam-nawaz-direction-tweet.png" alt="Chief Minister Punjab Directive on Two-Bin Segregation" class="rounded-lg border border-slate-200 object-cover w-full h-44">
+                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/dc-bahawalpur-field-visit.jpeg" alt="Field visit of DC Bahawalpur to UC-14" class="rounded-lg border border-slate-200 object-cover w-full h-72">
+                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/cm-maryam-nawaz-direction-tweet.png" alt="Chief Minister Punjab Directive on Two-Bin Segregation" class="rounded-lg border border-slate-200 object-contain bg-white w-full h-72">
               </div>
             </div>
           </div>
@@ -666,7 +700,7 @@
             From Communication to Behaviour Change
           </h2>
           <p class="text-base text-slate-600 mt-2">
-            SBCC is not passive marketingâ€”it is an evidence-based behavioral framework designed to take communities from passive exposure to daily, ingrained waste segregation.
+            SBCC is not passive marketing—it is an evidence-based behavioral framework designed to take communities from passive exposure to daily, ingrained waste segregation.
           </p>
           
           <!-- SBCC 5-Step Formula -->
@@ -684,7 +718,7 @@
 
           <!-- Card 1: Film Screenings -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image4.png" alt="Film Screenings" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.08%20AM.jpeg" alt="Documentary screening during a school session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Documentary screening during a school session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image4.png" alt="Scene from the project documentary" loading="lazy" class="w-full h-44 object-cover"><figcaption>Scene from the project documentary</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 1 &bull; Inform</span>
               <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Film Screenings</h3>
@@ -696,7 +730,7 @@
 
           <!-- Card 2: Practical Demonstrations -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/school-campaign-presentation.jpg" alt="Practical Demonstrations" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.07%20AM.jpeg" alt="Facilitator presenting during a school awareness session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Facilitator presenting during a school awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.06%20AM.jpeg" alt="Students with waste segregation awareness fans" loading="lazy" class="w-full h-44 object-cover"><figcaption>Students with waste segregation awareness fans</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 2 &bull; Demonstrate</span>
               <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Practical Demonstrations</h3>
@@ -720,7 +754,7 @@
 
           <!-- Card 4: Community Mohalla Sessions -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/community-action-session-3.jpg" alt="Community Sessions" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.22%20%282%29.jpeg" alt="Community awareness session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Community awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.25.jpeg" alt="Participants at a community awareness session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Participants at a community awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.22.jpeg" alt="Community members attending the awareness session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Community members attending the awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.20.jpeg" alt="Participants and facilitators at the awareness event" loading="lazy" class="w-full h-44 object-cover"><figcaption>Participants and facilitators at the awareness event</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 4 &bull; Engage</span>
               <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Community Sessions (35 Hubs)</h3>
@@ -732,10 +766,10 @@
 
           <!-- Card 5: Women's Community Sessions -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/community-women-session-1.jpg" alt="Women Community Sessions" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.24.jpeg" alt="Women participants at a community awareness session" loading="lazy" class="w-full h-44 object-cover"><figcaption>Women participants at a community awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.02%20%281%29.jpeg" alt="Female outreach team member during a door-to-door visit" loading="lazy" class="w-full h-44 object-cover"><figcaption>Female outreach team member during a door-to-door visit</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.59.jpeg" alt="Female outreach team member engaging a shopkeeper" loading="lazy" class="w-full h-44 object-cover"><figcaption>Female outreach team member engaging a shopkeeper</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.19.jpeg" alt="Female students and participants at an awareness event" loading="lazy" class="w-full h-44 object-cover"><figcaption>Female students and participants at an awareness event</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 5 &bull; Inclusivity</span>
-              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Womenâ€™s Community Sessions</h3>
+              <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Women’s Community Sessions</h3>
               <p class="text-xs text-slate-600 leading-relaxed">
                 Women made up ~70% of relevant community session participants, reflecting their direct, daily control over domestic kitchen waste sorting.
               </p>
@@ -744,7 +778,7 @@
 
           <!-- Card 6: Transgender Community Sessions -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/transgender-community-session.jpg" alt="Transgender Community Awareness" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0156.jpg&w=1400&q=80&output=jpg" alt="Eco-friendly pencil making workshop with transgender community members" loading="lazy" class="w-full h-44 object-cover"><figcaption>Eco-friendly pencil making workshop with transgender community members</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0163.jpg&w=1400&q=80&output=jpg" alt="Transgender community members showing pencils made from waste paper" loading="lazy" class="w-full h-44 object-cover"><figcaption>Transgender community members showing pencils made from waste paper</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0173.jpg&w=1400&q=80&output=jpg" alt="Transgender community session participants" loading="lazy" class="w-full h-44 object-cover"><figcaption>Transgender community session participants</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0181.jpg&w=1400&q=80&output=jpg" alt="Hands-on session with transgender community members" loading="lazy" class="w-full h-44 object-cover"><figcaption>Hands-on session with transgender community members</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0175.jpg&w=1400&q=80&output=jpg" alt="Facilitators with transgender community participants" loading="lazy" class="w-full h-44 object-cover"><figcaption>Facilitators with transgender community participants</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image9.jpg" alt="Transgender community eco-friendly pencil making workshop" loading="lazy" class="w-full h-44 object-cover"><figcaption>Transgender community eco-friendly pencil making workshop</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-purple-600 uppercase tracking-wider">Step 6 &bull; Equity</span>
               <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Transgender Community Workshops</h3>
@@ -768,7 +802,7 @@
 
           <!-- Card 8: Eco-Friendly Pencil Workshops -->
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image9.jpg" alt="Eco-Friendly Pencil Making" class="w-full h-44 object-cover">
+            <div class="media-carousel rounded-none" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FDSC07959.JPG&w=1400&q=80&output=jpg" alt="Eco-friendly pencil making workshop with school students" loading="lazy" class="w-full h-44 object-cover"><figcaption>Eco-friendly pencil making workshop with school students</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image10.jpg" alt="Students making eco-friendly pencils from waste paper" loading="lazy" class="w-full h-44 object-cover"><figcaption>Students making eco-friendly pencils from waste paper</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
             <div class="p-5">
               <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 8 &bull; Sustain</span>
               <h3 class="text-base font-bold text-slate-900 mt-1 mb-2">Eco-Pencil Making Workshops</h3>
@@ -818,7 +852,7 @@
                 <strong>Evidence Note:</strong> In strict alignment with verified project records, the sessions provided a direct platform for women's active participation in household source segregation practices. No unsupported claims of livelihood or income generation were made.
               </div>
             </div>
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/community-women-session-2.jpg" alt="Women Community Participation" class="rounded-xl object-cover h-48 w-full border border-slate-200">
+            <div class="media-carousel rounded-xl border border-slate-200" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.24.jpeg" alt="Women participants at a community awareness session" loading="lazy" class="w-full h-56 object-cover"><figcaption>Women participants at a community awareness session</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.02%20%281%29.jpeg" alt="Female outreach team member during a door-to-door visit" loading="lazy" class="w-full h-56 object-cover"><figcaption>Female outreach team member during a door-to-door visit</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.59.jpeg" alt="Female outreach team member engaging a shopkeeper" loading="lazy" class="w-full h-56 object-cover"><figcaption>Female outreach team member engaging a shopkeeper</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.19.jpeg" alt="Female students and participants at an awareness event" loading="lazy" class="w-full h-56 object-cover"><figcaption>Female students and participants at an awareness event</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
           </div>
 
           <!-- Pillar 2: Students & Zero Waste Warriors -->
@@ -858,7 +892,7 @@
                 <strong>Principles:</strong> Non-tokenistic, respectful engagement focused on safe household hygiene, environmental responsibility, and community solid waste participation.
               </div>
             </div>
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/transgender-community-session.jpg" alt="Transgender Community Engagement Workshop" class="rounded-xl object-cover h-48 w-full border border-slate-200">
+            <div class="media-carousel rounded-xl border border-slate-200" data-carousel><div class="carousel-track"><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0156.jpg&w=1400&q=80&output=jpg" alt="Eco-friendly pencil making workshop with transgender community members" loading="lazy" class="w-full h-56 object-cover"><figcaption>Eco-friendly pencil making workshop with transgender community members</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0163.jpg&w=1400&q=80&output=jpg" alt="Transgender community members showing pencils made from waste paper" loading="lazy" class="w-full h-56 object-cover"><figcaption>Transgender community members showing pencils made from waste paper</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0173.jpg&w=1400&q=80&output=jpg" alt="Transgender community session participants" loading="lazy" class="w-full h-56 object-cover"><figcaption>Transgender community session participants</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0181.jpg&w=1400&q=80&output=jpg" alt="Hands-on session with transgender community members" loading="lazy" class="w-full h-56 object-cover"><figcaption>Hands-on session with transgender community members</figcaption></figure><figure class="carousel-slide"><img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0175.jpg&w=1400&q=80&output=jpg" alt="Facilitators with transgender community participants" loading="lazy" class="w-full h-56 object-cover"><figcaption>Facilitators with transgender community participants</figcaption></figure><figure class="carousel-slide"><img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image9.jpg" alt="Transgender community eco-friendly pencil making workshop" loading="lazy" class="w-full h-56 object-cover"><figcaption>Transgender community eco-friendly pencil making workshop</figcaption></figure></div><button type="button" class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button><button type="button" class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button><div class="carousel-dots"></div></div>
           </div>
 
         </div>
@@ -884,10 +918,10 @@
           <!-- Urdu Slogan Callout Box -->
           <div class="mt-6 bg-gradient-to-r from-emerald-100 via-sky-100 to-emerald-100 border border-emerald-300 rounded-2xl p-4 sm:p-6 shadow-sm">
             <div class="text-2xl sm:text-3xl font-bold font-urdu text-brand-950 mb-1" dir="rtl">
-              â€œØ³ÙˆÚ©Ú¾Û’ Ú©Ø§ Ù¹Ú¾Ú©Ø§Ù†Û Ù†ÛŒÙ„Ø§ØŒ ÛØ±Û’ Ù…ÛŒÚº ÚˆØ§Ù„ÛŒÚº Ú¯ÛŒÙ„Ø§â€
+              “سوکھے کا ٹھکانہ نیلا، ہرے میں ڈالیں گیلا”
             </div>
             <div class="text-xs sm:text-sm font-semibold tracking-wide text-brand-800">
-              â€œSookhe ka thikana neela, haray mein daalyn geela.â€
+              “Sookhe ka thikana neela, haray mein daalyn geela.”
             </div>
             <div class="text-xs text-slate-600 mt-1">
               (Dry waste in the Blue bin, Wet waste in the Green bin)
@@ -905,7 +939,7 @@
                 <span class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">G</span>
                 <div>
                   <h3 class="text-xl font-bold text-emerald-950">Green Bin: Wet / Organic Waste</h3>
-                  <div class="text-xs font-semibold text-emerald-800 font-urdu" dir="rtl">ÛØ±Ø§ ÚˆØ¨Û: Ú¯ÛŒÙ„Ø§ Ú©ÙˆÚ‘Ø§</div>
+                  <div class="text-xs font-semibold text-emerald-800 font-urdu" dir="rtl">ہرا ڈبہ: گیلا کوڑا</div>
                 </div>
               </div>
               <span class="text-xs font-bold bg-emerald-200 text-emerald-900 px-2.5 py-1 rounded-full uppercase">Organic Stream</span>
@@ -928,7 +962,7 @@
                 <span class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">B</span>
                 <div>
                   <h3 class="text-xl font-bold text-blue-950">Blue Bin: Dry / Recyclable Waste</h3>
-                  <div class="text-xs font-semibold text-blue-800 font-urdu" dir="rtl">Ù†ÛŒÙ„Ø§ ÚˆØ¨Û: Ø³ÙˆÚ©Ú¾Ø§ Ú©ÙˆÚ‘Ø§</div>
+                  <div class="text-xs font-semibold text-blue-800 font-urdu" dir="rtl">نیلا ڈبہ: سوکھا کوڑا</div>
                 </div>
               </div>
               <span class="text-xs font-bold bg-blue-200 text-blue-900 px-2.5 py-1 rounded-full uppercase">Inorganic Stream</span>
@@ -969,13 +1003,13 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
             
             <div id="dropzone-wet" class="p-6 rounded-xl border-2 border-dashed border-emerald-400 bg-emerald-50/70 text-center cursor-pointer transition">
-              <div class="text-3xl mb-2">ðŸŸ¢</div>
+              <div class="text-3xl mb-2">🟢</div>
               <div class="text-sm font-bold text-emerald-950">Deposit in Green Bin (Wet)</div>
               <div class="text-xs text-emerald-700">Kitchen scraps, fruit/vegetable peels, leftover food</div>
             </div>
 
             <div id="dropzone-dry" class="p-6 rounded-xl border-2 border-dashed border-blue-400 bg-blue-50/70 text-center cursor-pointer transition">
-              <div class="text-3xl mb-2">ðŸ”µ</div>
+              <div class="text-3xl mb-2">🔵</div>
               <div class="text-sm font-bold text-blue-950">Deposit in Blue Bin (Dry)</div>
               <div class="text-xs text-blue-700">Plastic bottles, cardboard cartons, tins, paper</div>
             </div>
@@ -1004,7 +1038,7 @@
             UC-14: From Awareness to Practice
           </h2>
           <p class="text-lg text-slate-600 mt-4 leading-relaxed">
-            The landmark pilot in Union Council 14 (Mohammadia Colony & Trust Colony) that turned Bahawalpurâ€™s behaviour-change strategy into measurable on-the-ground municipal reality.
+            The landmark pilot in Union Council 14 (Mohammadia Colony & Trust Colony) that turned Bahawalpur’s behaviour-change strategy into measurable on-the-ground municipal reality.
           </p>
         </div>
 
@@ -1231,8 +1265,9 @@
             <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-emerald-950">
               <div class="text-xs font-bold uppercase tracking-wider text-emerald-800 mb-1">Direct Worker Incentives from Recyclable Yield</div>
               <div class="text-2xl font-extrabold text-emerald-900 font-serif">Rs. 22,639 Distributed</div>
+              <div class="text-xs font-bold text-emerald-700 mt-0.5">First-month incentive</div>
               <p class="text-xs text-emerald-800 mt-1 leading-relaxed">
-                During the Julyâ€“August 2026 pilot monitoring, <strong>550+ kg of clean segregated recyclables</strong> (184.5 kg plastic and 365.5 kg cardboard) were logged with a recorded value of Rs. 30,019. The proceeds (Rs. 22,639) were disbursed directly to the sanitary workers collecting and maintaining segregation in Trust Colony and Mohammadia Colony.
+                During the July–August 2026 pilot monitoring, <strong>550+ kg of clean segregated recyclables</strong> (184.5 kg plastic and 365.5 kg cardboard) were logged with a recorded value of Rs. 30,019. The proceeds (Rs. 22,639) were disbursed as the first month’s incentive directly to the sanitary workers collecting and maintaining segregation in Trust Colony and Mohammadia Colony.
               </p>
             </div>
 
@@ -1244,7 +1279,7 @@
 
           <div class="lg:col-span-6 space-y-4">
             <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-md">
-              <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image20.jpg" alt="Formal Recognition of Sanitary Workers in Trust Colony - 13 August 2026" class="w-full h-72 object-cover rounded-xl shadow-sm">
+              <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image20.jpg" alt="Formal Recognition of Sanitary Workers in Trust Colony - 13 August 2026" class="w-full h-auto object-contain bg-slate-50 rounded-xl shadow-sm">
               <div class="p-3">
                 <h3 class="text-sm font-bold text-slate-900">Sanitary Workers Recognition Ceremony</h3>
                 <p class="text-xs text-slate-500 mt-0.5">
@@ -1255,12 +1290,12 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div class="bg-white p-2 rounded-xl border border-slate-200">
-                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/sanitary-worker-segregation-cart.jpg" alt="Sanitary Worker Segregated Collection Cart" class="w-full h-36 object-cover rounded-lg">
-                <div class="text-[11px] font-semibold text-slate-700 p-1.5">Dual-bin collection handcart</div>
+                <video class="w-full h-36 object-cover rounded-lg bg-black" src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/sanitary-collection-clip.mp4" muted loop playsinline autoplay preload="metadata" aria-label="BWMC sanitary worker at blue and green segregation bins"></video>
+                <div class="text-[11px] font-semibold text-slate-700 p-1.5">BWMC sanitary worker at blue &amp; green bins</div>
               </div>
               <div class="bg-white p-2 rounded-xl border border-slate-200">
-                <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/sanitary-worker-segregation-collection.jpg" alt="Sanitary Worker Field Operations" class="w-full h-36 object-cover rounded-lg">
-                <div class="text-[11px] font-semibold text-slate-700 p-1.5">Direct household collection</div>
+                <video class="w-full h-36 object-cover rounded-lg bg-black" src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/uc14-door-to-door-clip.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Door-to-door two-bin handover with a BWMC worker"></video>
+                <div class="text-[11px] font-semibold text-slate-700 p-1.5">Door-to-door two-bin handover</div>
               </div>
             </div>
           </div>
@@ -1282,7 +1317,7 @@
             Institutional Leadership & Field Governance
           </h2>
           <p class="text-base text-slate-600 mt-2">
-            Active field presence by Bahawalpurâ€™s civil administration ensured operational accountability and created the high-level evidence required for provincial scaling.
+            Active field presence by Bahawalpur’s civil administration ensured operational accountability and created the high-level evidence required for provincial scaling.
           </p>
         </div>
 
@@ -1296,7 +1331,7 @@
                 <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider">Civil Oversight</span>
                 <h3 class="text-base font-bold text-brand-950 mt-1 mb-2">DC Bahawalpur Field Visit</h3>
                 <p class="text-xs text-slate-600 leading-relaxed font-serif italic text-slate-700">
-                  â€œField visit of the Deputy Commissioner Bahawalpur to UC-14 to review the Two-Bin Segregation Pilot, household-level implementation, community engagement and segregated collection activities.â€
+                  “Field visit of the Deputy Commissioner Bahawalpur to UC-14 to review the Two-Bin Segregation Pilot, household-level implementation, community engagement and segregated collection activities.”
                 </p>
               </div>
             </div>
@@ -1313,7 +1348,7 @@
                 <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Operational Alignment</span>
                 <h3 class="text-base font-bold text-brand-950 mt-1 mb-2">CIT & CEO BWMC Coordination</h3>
                 <p class="text-xs text-slate-600 leading-relaxed font-serif italic text-slate-700">
-                  â€œCoordination meeting with CIT and CEO BWMC, Mr. M. Naeem Akhtar, to review implementation progress, community engagement, operational requirements and next steps.â€
+                  “Coordination meeting with CIT and CEO BWMC, Mr. M. Naeem Akhtar, to review implementation progress, community engagement, operational requirements and next steps.”
                 </p>
               </div>
             </div>
@@ -1383,7 +1418,7 @@
 
           <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
             <div class="text-3xl sm:text-4xl font-extrabold text-amber-600 font-serif stat-count" data-target="22639" data-prefix="Rs. ">0</div>
-            <div class="text-xs font-bold text-slate-700 uppercase mt-2">Worker Incentives Paid</div>
+            <div class="text-xs font-bold text-slate-700 uppercase mt-2">Worker Incentives Paid (First Month)</div>
             <div class="text-[11px] text-slate-400 mt-1">From 550+ kg recorded recyclables</div>
           </div>
 
@@ -1538,11 +1573,11 @@
 
           <!-- Category Filter Pills -->
           <div class="flex flex-wrap items-center justify-center gap-1.5">
-            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-sky-600 text-white shadow-sm transition" data-category="all">All (30+)</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-sky-600 text-white shadow-sm transition" data-category="all">All</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="pre-inception">Pre-Inception Documentary</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="schools">School Outreach</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="community">Community Sessions</button>
-            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="women">Womenâ€™s Participation</button>
+            <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="women">Women’s Participation</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="transgender">Transgender Engagement</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="warriors">Zero Waste Warriors</button>
             <button class="gallery-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition" data-category="pencil">Eco-Pencil Workshops</button>
@@ -1593,11 +1628,11 @@
           </div>
 
           <!-- 5 -->
-          <div class="gallery-card cursor-pointer" data-category="pencil women" data-category-label="Eco-Friendly Pencil Workshop" data-title="Eco-Friendly Pencil Making: Women's Group" data-caption="Women participants hand-rolling discarded newspaper into functioning graphite pencils.">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image9.jpg" alt="Eco-Friendly Pencil Workshop Women" class="gallery-thumbnail w-full">
+          <div class="gallery-card cursor-pointer" data-category="transgender pencil" data-category-label="Transgender Engagement" data-title="Eco-Friendly Pencil Making Workshop with Transgender Community" data-caption="Eco-friendly pencil making workshop held with transgender community members.">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image9.jpg" alt="Eco-Friendly Pencil Workshop with Transgender Community" class="gallery-thumbnail w-full">
             <div class="gallery-overlay">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Women & Recycling</span>
-              <div class="text-xs font-bold leading-snug">Eco-Pencil Workshop (Women)</div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
+              <div class="text-xs font-bold leading-snug">Eco-Pencil Workshop (Transgender Community)</div>
             </div>
           </div>
 
@@ -1693,7 +1728,7 @@
 
           <!-- 16 -->
           <div class="gallery-card cursor-pointer" data-category="replication" data-category-label="Provincial Mandate" data-title="Chief Minister Punjab Suthra Punjab Directive" data-caption="Official communication by Punjab Chief Minister Maryam Nawaz Sharif (8 August 2026) regarding province-wide replication of the two-bin wet/dry model.">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/cm-maryam-nawaz-direction-tweet.png" alt="CM Punjab Directive" class="gallery-thumbnail w-full">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/cm-maryam-nawaz-direction-tweet.png" alt="CM Punjab Directive" class="gallery-thumbnail w-full bg-white" style="object-fit:contain">
             <div class="gallery-overlay">
               <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Provincial Mandate</span>
               <div class="text-xs font-bold leading-snug">CM Punjab Scaling Directive</div>
@@ -1701,8 +1736,8 @@
           </div>
 
           <!-- 17: Transgender Community Workshop -->
-          <div class="gallery-card cursor-pointer" data-category="transgender community" data-category-label="Inclusive Sessions" data-title="Transgender Community Awareness Session" data-caption="Dedicated session held with transgender community members in Bahawalpur on sustainable solid waste management.">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/transgender-community-session.jpg" alt="Transgender Community Awareness" class="gallery-thumbnail w-full">
+          <div class="gallery-card cursor-pointer" data-category="transgender community" data-category-label="Inclusive Sessions" data-title="Transgender Community Awareness Session" data-caption="Dedicated session held with transgender community members in Bahawalpur on sustainable solid waste management." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/IMG-20251202-WA0163.jpg">
+            <img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0163.jpg&w=1400&q=80&output=jpg" alt="Transgender Community Awareness" class="gallery-thumbnail w-full" loading="lazy">
             <div class="gallery-overlay">
               <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
               <div class="text-xs font-bold leading-snug">Transgender Awareness Session</div>
@@ -1710,20 +1745,11 @@
           </div>
 
           <!-- 18: School Campaign Assembly -->
-          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="School Campaign" data-title="School Morning Assembly Segregation Orientation" data-caption="Students being briefed on the Two-Bin System during school morning assembly.">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/school-campaign-assembly.jpg" alt="School Assembly Orientation" class="gallery-thumbnail w-full">
+          <div class="gallery-card cursor-pointer" data-category="schools pre-inception" data-category-label="School Outreach" data-title="Documentary Screening During a School Session" data-caption="Students watching the project documentary during a school awareness session.">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.08%20AM.jpeg" alt="Documentary screening during a school session" class="gallery-thumbnail w-full" loading="lazy">
             <div class="gallery-overlay">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Assembly</span>
-              <div class="text-xs font-bold leading-snug">Assembly Waste Briefing</div>
-            </div>
-          </div>
-
-          <!-- 19: DC Visit Two-Bin Check -->
-          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="DC Visit" data-title="DC Inspects Household Two-Bin Segregation" data-caption="Deputy Commissioner Bahawalpur directly inspecting household bins in UC-14 to verify source segregation.">
-            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/dc-visit-two-bin-check.jpg" alt="DC Inspects Household Bins" class="gallery-thumbnail w-full">
-            <div class="gallery-overlay">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">DC Inspection</span>
-              <div class="text-xs font-bold leading-snug">Household Bin Inspection</div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Outreach</span>
+              <div class="text-xs font-bold leading-snug">Documentary Screening at School</div>
             </div>
           </div>
 
@@ -1733,6 +1759,155 @@
             <div class="gallery-overlay">
               <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Governance</span>
               <div class="text-xs font-bold leading-snug">Commissioner Division Briefing</div>
+            </div>
+          </div>
+
+          <!-- Additional authentic project photographs -->
+          <div class="gallery-card cursor-pointer" data-category="transgender pencil" data-category-label="Transgender Engagement" data-title="Transgender Community Eco-Pencil Workshop" data-caption="Transgender community members holding pencils they made from waste paper." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/IMG-20251202-WA0156.jpg">
+            <img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0156.jpg&w=1400&q=80&output=jpg" alt="Transgender Community Eco-Pencil Workshop" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
+              <div class="text-xs font-bold leading-snug">Transgender Community Workshop</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="transgender pencil" data-category-label="Transgender Engagement" data-title="Hands-on Session with Transgender Community" data-caption="Facilitators guiding transgender community participants through the eco-friendly pencil making activity." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/IMG-20251202-WA0181.jpg">
+            <img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0181.jpg&w=1400&q=80&output=jpg" alt="Hands-on Session with Transgender Community" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
+              <div class="text-xs font-bold leading-snug">Hands-on Pencil Making</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="transgender community" data-category-label="Transgender Engagement" data-title="Transgender Community Session" data-caption="Facilitators with transgender community participants during the session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/IMG-20251202-WA0175.jpg">
+            <img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FIMG-20251202-WA0175.jpg&w=1400&q=80&output=jpg" alt="Transgender Community Session" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Inclusion</span>
+              <div class="text-xs font-bold leading-snug">Transgender Community Session</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="pencil schools" data-category-label="Eco-Pencil Workshops" data-title="Eco-Friendly Pencil Making Workshop with Students" data-caption="School students taking part in an eco-friendly pencil making workshop." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/DSC07959.JPG">
+            <img src="https://wsrv.nl/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmaidakhnmk-ux%2FDREAMS-I%2Fmain%2FDSC07959.JPG&w=1400&q=80&output=jpg" alt="Eco-Friendly Pencil Making Workshop with Students" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Youth Upcycling</span>
+              <div class="text-xs font-bold leading-snug">Eco-Pencil Workshop (Students)</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="women community" data-category-label="Women’s Participation" data-title="Women at a Community Awareness Session" data-caption="Women participants attending a community awareness session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.24.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.24.jpeg" alt="Women at a Community Awareness Session" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Women</span>
+              <div class="text-xs font-bold leading-snug">Women Participants</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="women d2d" data-category-label="Women’s Participation" data-title="Female Outreach Team Member at a Doorstep" data-caption="Female outreach team member during a door-to-door awareness visit." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.02%20%281%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.02%20%281%29.jpeg" alt="Female Outreach Team Member at a Doorstep" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Women</span>
+              <div class="text-xs font-bold leading-snug">Women in Door-to-Door Outreach</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="women d2d" data-category-label="Women’s Participation" data-title="Female Outreach Team Member at a Shop" data-caption="Female outreach team member engaging a shopkeeper during commercial outreach." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.59.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.59.jpeg" alt="Female Outreach Team Member at a Shop" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Women</span>
+              <div class="text-xs font-bold leading-snug">Women in Commercial Outreach</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="community" data-category-label="Community Sessions" data-title="Community Awareness Session" data-caption="Community members attending an awareness session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.22%20%282%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.22%20%282%29.jpeg" alt="Community Awareness Session" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Community</span>
+              <div class="text-xs font-bold leading-snug">Community Awareness Session</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="community women" data-category-label="Community Sessions" data-title="Community Session Participants" data-caption="Participants at a community awareness session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.25.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.25.jpeg" alt="Community Session Participants" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Community</span>
+              <div class="text-xs font-bold leading-snug">Community Session</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="community schools" data-category-label="Community Sessions" data-title="Participants on Stage at an Awareness Event" data-caption="Students, participants and facilitators on stage at an awareness event." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.20.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2014.33.20.jpeg" alt="Participants on Stage at an Awareness Event" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Community</span>
+              <div class="text-xs font-bold leading-snug">Awareness Event</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="School Outreach" data-title="Facilitator Presenting at a School Session" data-caption="Facilitator presenting the Two-Bin message during a school awareness session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.07%20AM.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.07%20AM.jpeg" alt="Facilitator Presenting at a School Session" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Outreach</span>
+              <div class="text-xs font-bold leading-snug">School Session Presentation</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="schools women" data-category-label="School Outreach" data-title="Female Students at a School Session" data-caption="Female students listening during a school awareness session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.07%20AM%20%282%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.07%20AM%20%282%29.jpeg" alt="Female Students at a School Session" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">School Outreach</span>
+              <div class="text-xs font-bold leading-snug">Students at School Session</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="schools" data-category-label="School Outreach" data-title="Students with Awareness Fans" data-caption="Students holding waste segregation awareness fans during a school session." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.06%20AM.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202025-11-03%20at%209.58.06%20AM.jpeg" alt="Students with Awareness Fans" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">IEC Material</span>
+              <div class="text-xs font-bold leading-snug">Awareness Fans at School</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="d2d" data-category-label="Door-to-Door" data-title="Door-to-Door Awareness Visits" data-caption="Collage of door-to-door awareness visits to households and shops." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/photo-collage.png%20%281%29.png">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/photo-collage.png%20%281%29.png" alt="Door-to-Door Awareness Visits" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Door-to-Door</span>
+              <div class="text-xs font-bold leading-snug">Door-to-Door Visits</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="d2d workers" data-category-label="Door-to-Door" data-title="Door-to-Door Outreach with Sanitary Workers" data-caption="Collage of outreach team and sanitary workers visiting homes and shops." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/photo-collage.png%20%282%29.png">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/photo-collage.png%20%282%29.png" alt="Door-to-Door Outreach with Sanitary Workers" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Door-to-Door</span>
+              <div class="text-xs font-bold leading-snug">Outreach Collage</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="d2d women" data-category-label="Door-to-Door" data-title="Doorstep Conversation with a Resident" data-caption="Outreach team member speaking with a resident at her doorstep." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.00%20%281%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.00%20%281%29.jpeg" alt="Doorstep Conversation with a Resident" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Door-to-Door</span>
+              <div class="text-xs font-bold leading-snug">Doorstep Conversation</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="d2d" data-category-label="Door-to-Door" data-title="Household Awareness Visit" data-caption="Outreach team member explaining waste segregation at a household gate." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.58.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.45.58.jpeg" alt="Household Awareness Visit" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Door-to-Door</span>
+              <div class="text-xs font-bold leading-snug">Household Visit</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="workers d2d" data-category-label="Sanitary Workers" data-title="Sanitary Workers in Commercial Outreach" data-caption="BWMC sanitary workers accompanying the outreach team to a shop." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.04%20%281%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.04%20%281%29.jpeg" alt="Sanitary Workers in Commercial Outreach" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Frontline Workers</span>
+              <div class="text-xs font-bold leading-snug">Workers in Commercial Outreach</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="workers d2d" data-category-label="Sanitary Workers" data-title="Sanitary Workers with Outreach Team" data-caption="Sanitary workers and outreach team speaking with a business owner." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.03%20%281%29.jpeg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/WhatsApp%20Image%202026-01-05%20at%2017.46.03%20%281%29.jpeg" alt="Sanitary Workers with Outreach Team" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Frontline Workers</span>
+              <div class="text-xs font-bold leading-snug">Workers with Outreach Team</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="pre-inception" data-category-label="Two-Bin System" data-title="Blue &amp; Green in Action: Waste Segregation on Vehicles" data-caption="Blue (dry) and green (wet) segregated collection vehicles." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image6.jpg">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/image6.jpg" alt="Blue &amp; Green in Action: Waste Segregation on Vehicles" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-sky-300">Two-Bin System</span>
+              <div class="text-xs font-bold leading-snug">Blue &amp; Green Vehicles</div>
+            </div>
+          </div>
+          <div class="gallery-card cursor-pointer" data-category="admin" data-category-label="Partnership" data-title="ADB–UNICEF Letter of Understanding Signing" data-caption="Signing of the ADB–UNICEF Letter of Understanding." data-full="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/adb-unicef-lou-signing.png">
+            <img src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/adb-unicef-lou-signing.png" alt="ADB–UNICEF Letter of Understanding Signing" class="gallery-thumbnail w-full" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Partnership</span>
+              <div class="text-xs font-bold leading-snug">ADB–UNICEF LoU Signing</div>
             </div>
           </div>
 
@@ -1805,7 +1980,7 @@
 
             <div class="video-playlist-item p-3.5 rounded-xl border border-sky-500 bg-sky-50 cursor-pointer transition hover:bg-slate-50" data-src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/uc14-bin-usage-clip.mp4" data-title="UC-14 Household Bin Usage & Citizen Feedback" data-desc="Authentic field clip capturing householders in UC-14 sorting organic waste into green containers and presenting recyclables to BWMC frontline collectors.">
               <div class="flex items-center gap-3">
-                <span class="text-sky-600 text-lg">â–¶</span>
+                <span class="text-sky-600 text-lg">▶</span>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Clip 1: Household Bin Practice</div>
                   <div class="text-[11px] text-slate-500">UC-14 Citizen Action & Sorting</div>
@@ -1815,7 +1990,7 @@
 
             <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/uc14-door-to-door-clip.mp4" data-title="Door-to-Door Social Mobilization Team in Action" data-desc="City Implementation Team (CIT) social mobilizers visiting homes in Trust Colony, demonstrating two-bin placement in kitchens.">
               <div class="flex items-center gap-3">
-                <span class="text-sky-600 text-lg">â–¶</span>
+                <span class="text-sky-600 text-lg">▶</span>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Clip 2: D2D Social Mobilizers</div>
                   <div class="text-[11px] text-slate-500">Lane-by-lane household orientation</div>
@@ -1823,9 +1998,9 @@
               </div>
             </div>
 
-            <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/household-segregation-clip.mp4" data-title="Everyday Segregation in Domestic Routine" data-caption="Direct citizen recording showing wet organic food scrap separation in the household kitchen.">
+            <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/household-segregation-clip.mp4" data-title="Everyday Segregation in Domestic Routine" data-desc="Direct citizen recording showing wet organic food scrap separation in the household kitchen.">
               <div class="flex items-center gap-3">
-                <span class="text-sky-600 text-lg">â–¶</span>
+                <span class="text-sky-600 text-lg">▶</span>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Clip 3: Everyday Domestic Sorting</div>
                   <div class="text-[11px] text-slate-500">Citizen verification in kitchen</div>
@@ -1835,7 +2010,7 @@
 
             <div class="video-playlist-item p-3.5 rounded-xl border border-slate-200 bg-white cursor-pointer transition hover:bg-slate-50" data-src="https://raw.githubusercontent.com/maidakhnmk-ux/DREAMS-I/main/sanitary-collection-clip.mp4" data-title="Sanitary Worker Segregated Collection Cart" data-desc="BWMC sanitary worker collecting dry cardboard and plastic separately using the partitioned waste cart.">
               <div class="flex items-center gap-3">
-                <span class="text-sky-600 text-lg">â–¶</span>
+                <span class="text-sky-600 text-lg">▶</span>
                 <div>
                   <div class="text-xs font-bold text-slate-900">Clip 4: Segregated Collection Cart</div>
                   <div class="text-[11px] text-slate-500">BWMC beat worker collecting dry stream</div>
@@ -2036,7 +2211,7 @@
             <h3 class="text-2xl font-bold text-brand-950 font-serif">The Policy Uptake Trajectory</h3>
             <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
               <p>
-                The tangible successes in UC-14â€”where 1,035 households segregated waste and frontline sanitary workers were rewarded through direct recyclable revenue sharingâ€”drew immediate local administrative attention.
+                The tangible successes in UC-14—where 1,035 households segregated waste and frontline sanitary workers were rewarded through direct recyclable revenue sharing—drew immediate local administrative attention.
               </p>
               <p>
                 The model was presented to the <strong>Deputy Commissioner Bahawalpur</strong>, who conducted extensive ground inspections and briefed the <strong>Chief Minister of Punjab</strong> on its design, operational mechanics, and community adoption.
@@ -2056,7 +2231,7 @@
                   <span>Documented Evidence &bull; Official Communication</span>
                   <span>8 August 2026</span>
                 </div>
-                <div class="text-sm font-bold">Punjab Chief Minister Maryam Nawaz Sharif â€” Official Communication</div>
+                <div class="text-sm font-bold">Punjab Chief Minister Maryam Nawaz Sharif — Official Communication</div>
                 <p class="text-xs text-slate-300 mt-1 leading-relaxed">
                   Directing the province-wide "Suthra Punjab" door-to-door waste collection and segregation drive, recognizing compliant households as <em>"Environment-Friendly Homes"</em> with wet/dry segregation.
                 </p>
@@ -2160,7 +2335,7 @@
           
           <div class="p-8 sm:p-12 bg-slate-50 border border-slate-200 rounded-3xl shadow-sm mb-12">
             <blockquote class="text-xl sm:text-2xl font-serif text-slate-800 leading-relaxed italic mb-6">
-              â€œSuccessful waste segregation is not achieved through awareness alone. It requires continuous engagement, practical systems, community ownership and institutional support.â€
+              “Successful waste segregation is not achieved through awareness alone. It requires continuous engagement, practical systems, community ownership and institutional support.”
             </blockquote>
             
             <div class="w-16 h-1 bg-gradient-to-r from-sky-600 to-emerald-600 mx-auto mb-8 rounded-full"></div>
@@ -2267,7 +2442,7 @@
 
       <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
         <div>
-          &copy; 2024â€“2026 Government of the Punjab &bull; Asian Development Bank &bull; UNICEF &bull; BWMC. All rights reserved.
+          &copy; 2024–2026 Government of the Punjab &bull; Asian Development Bank &bull; UNICEF &bull; BWMC. All rights reserved.
         </div>
         <div class="text-right">
           Designed for international conference, government review, and development sector showcase.
@@ -2278,10 +2453,345 @@
   </footer>
 
   <!-- Vendor JS -->
-  <script src="leaflet.js"></script>
-  <script src="chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <!-- Main App Script -->
-  <script src="app.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var $ = function (sel, root) { return (root || document).querySelector(sel); };
+    var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+    function safe(name, fn) { try { fn(); } catch (err) { if (window.console) console.warn('[DREAMS-I] ' + name + ':', err); } }
+    function rawFromSrc(src) {
+      var m = (src || '').match(/^https:\/\/wsrv\.nl\/\?url=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : src;
+    }
+
+    /* ---------- Directory drawer ---------- */
+    safe('drawer', function () {
+      var drawer = $('#mobile-nav-drawer'), overlay = $('#nav-overlay');
+      function open() { drawer.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); }
+      function close() { drawer.classList.add('translate-x-full'); overlay.classList.add('hidden'); }
+      $('#mobile-nav-toggle').addEventListener('click', open);
+      $('#close-drawer-btn').addEventListener('click', close);
+      overlay.addEventListener('click', close);
+      $$('.nav-jump-link').forEach(function (a) { a.addEventListener('click', close); });
+    });
+
+    /* ---------- Scroll progress + active chapter ---------- */
+    safe('scroll', function () {
+      var bar = $('#scroll-progress-fill');
+      var links = $$('header .nav-link');
+      var sections = $$('main section[id]');
+      function onScroll() {
+        var h = document.documentElement;
+        var pct = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100;
+        if (bar) bar.style.width = pct + '%';
+        var current = '';
+        sections.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) current = s.id; });
+        links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === '#' + current && !a.classList.contains('bg-emerald-600')); });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    });
+
+    /* ---------- Timeline filter ---------- */
+    safe('timeline', function () {
+      var btns = $$('.timeline-filter-btn');
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var phase = btn.dataset.phase;
+          btns.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('bg-sky-600', on); b.classList.toggle('text-white', on); b.classList.toggle('shadow-sm', on);
+            b.classList.toggle('bg-white', !on); b.classList.toggle('text-slate-600', !on); b.classList.toggle('border', !on); b.classList.toggle('border-slate-200', !on);
+          });
+          $$('.timeline-item').forEach(function (it) { it.classList.toggle('is-hidden', phase !== 'all' && it.dataset.phase !== phase); });
+        });
+      });
+    });
+
+    /* ---------- Photo carousels ---------- */
+    safe('carousels', function () {
+      $$('[data-carousel]').forEach(function (c) {
+        var track = $('.carousel-track', c), slides = $$('.carousel-slide', c), dots = $('.carousel-dots', c);
+        if (slides.length < 2) { $$('.carousel-btn', c).forEach(function (b) { b.style.display = 'none'; }); return; }
+        slides.forEach(function (_, i) {
+          var d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'Photo ' + (i + 1));
+          d.addEventListener('click', function () { go(i); }); dots.appendChild(d);
+        });
+        function idx() { return Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); }
+        function go(i) { i = (i + slides.length) % slides.length; track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' }); }
+        function mark() { var i = idx(); $$('button', dots).forEach(function (d, k) { d.classList.toggle('is-active', k === i); }); }
+        $('.carousel-prev', c).addEventListener('click', function (e) { e.stopPropagation(); go(idx() - 1); });
+        $('.carousel-next', c).addEventListener('click', function (e) { e.stopPropagation(); go(idx() + 1); });
+        track.addEventListener('scroll', function () { window.requestAnimationFrame(mark); }, { passive: true });
+        mark();
+      });
+    });
+
+    /* ---------- Two-bin sorter ---------- */
+    safe('sorter', function () {
+      var pool = $('#sorting-items-pool'); if (!pool) return;
+      var items = [
+        { n: 'Vegetable peels', e: '🥕', t: 'wet' }, { n: 'Leftover food', e: '🍛', t: 'wet' },
+        { n: 'Tea leaves', e: '🍵', t: 'wet' }, { n: 'Fruit scraps', e: '🍌', t: 'wet' },
+        { n: 'Plastic bottle', e: '🧴', t: 'dry' }, { n: 'Cardboard box', e: '📦', t: 'dry' },
+        { n: 'Metal can', e: '🥫', t: 'dry' }, { n: 'Newspaper', e: '📰', t: 'dry' }
+      ];
+      var score = $('#sorter-score'), fb = $('#sorter-feedback'), selected = null, done = 0;
+      function render() {
+        pool.innerHTML = ''; done = 0; selected = null; score.textContent = '0 / 8 Sorted';
+        fb.textContent = 'Select an item, then click the bin it belongs in (or drag it).';
+        items.slice().sort(function () { return Math.random() - 0.5; }).forEach(function (it) {
+          var el = document.createElement('button'); el.type = 'button';
+          el.className = 'sort-item p-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white text-center transition';
+          el.draggable = true; el.dataset.type = it.t;
+          el.innerHTML = '<div class="text-2xl">' + it.e + '</div><div class="text-xs font-semibold text-slate-700 mt-1">' + it.n + '</div>';
+          el.addEventListener('click', function () { $$('.sort-item', pool).forEach(function (x) { x.classList.remove('is-selected'); }); el.classList.add('is-selected'); selected = el; });
+          el.addEventListener('dragstart', function (e) { selected = el; e.dataTransfer.setData('text/plain', it.n); });
+          pool.appendChild(el);
+        });
+      }
+      function drop(bin) {
+        if (!selected) { fb.textContent = 'First select an item from the list above.'; return; }
+        var name = selected.textContent.trim();
+        if (selected.dataset.type === bin) {
+          selected.classList.add('is-done'); selected.classList.remove('is-selected'); done++;
+          score.textContent = done + ' / 8 Sorted';
+          fb.innerHTML = '<span class="text-emerald-700 font-semibold">Correct!</span>&nbsp;' + name + ' goes in the ' + (bin === 'wet' ? 'Green (Wet)' : 'Blue (Dry)') + ' bin.';
+          if (done === 8) fb.innerHTML = '<span class="text-emerald-700 font-bold">Excellent — all 8 items sorted correctly!</span>';
+        } else {
+          fb.innerHTML = '<span class="text-rose-600 font-semibold">Not quite.</span>&nbsp;' + name + ' belongs in the ' + (bin === 'wet' ? 'Blue (Dry)' : 'Green (Wet)') + ' bin.';
+        }
+        selected = null;
+      }
+      [['#dropzone-wet', 'wet'], ['#dropzone-dry', 'dry']].forEach(function (z) {
+        var el = $(z[0]);
+        el.addEventListener('click', function () { drop(z[1]); });
+        el.addEventListener('dragover', function (e) { e.preventDefault(); el.classList.add('dropzone-hover'); });
+        el.addEventListener('dragleave', function () { el.classList.remove('dropzone-hover'); });
+        el.addEventListener('drop', function (e) { e.preventDefault(); el.classList.remove('dropzone-hover'); drop(z[1]); });
+      });
+      $('#sorter-reset-btn').addEventListener('click', render);
+      render();
+    });
+
+    /* ---------- Animated counters ---------- */
+    safe('counters', function () {
+      var els = $$('.stat-count');
+      function run(el) {
+        var target = +el.dataset.target, prefix = el.dataset.prefix || '', start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min(1, (ts - start) / 1400);
+          el.textContent = prefix + Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US');
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) { entries.forEach(function (en) { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } }); }, { threshold: 0.4 });
+        els.forEach(function (el) { io.observe(el); });
+      } else { els.forEach(run); }
+    });
+
+    /* ---------- Charts (Chart.js) ---------- */
+    safe('charts', function () {
+      if (!window.Chart) return;
+      Chart.defaults.font.family = '"Plus Jakarta Sans", system-ui, sans-serif';
+      Chart.defaults.color = '#475569';
+      var base = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true } } } };
+      new Chart($('#chart-gender'), { type: 'doughnut',
+        data: { labels: ['Female', 'Male'], datasets: [{ data: [6908, 3184], backgroundColor: ['#10B981', '#0284C7'], borderColor: '#fff', borderWidth: 2 }] },
+        options: Object.assign({ cutout: '62%' }, base) });
+      new Chart($('#chart-teams'), { type: 'bar',
+        data: { labels: ['Team A', 'Team B'], datasets: [{ label: 'People reached', data: [5001, 5108], backgroundColor: ['#0284C7', '#10B981'], borderRadius: 6, maxBarThickness: 56 }] },
+        options: Object.assign({}, base, { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#e2e8f0' } }, x: { grid: { display: false } } } }) });
+      new Chart($('#chart-recyclables'), { type: 'bar',
+        data: { labels: ['Plastic', 'Cardboard (Gatta)'], datasets: [{ label: 'kg recovered', data: [184.5, 365.5], backgroundColor: ['#2563EB', '#D97706'], borderRadius: 6, maxBarThickness: 56 }] },
+        options: Object.assign({}, base, { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#e2e8f0' }, title: { display: true, text: 'kg' } }, x: { grid: { display: false } } } }) });
+    });
+
+    /* ---------- GIS map (Leaflet) — only GPS points stamped on project photos ---------- */
+    safe('map', function () {
+      var el = $('#bahawalpur-map'); if (!el || !window.L) return;
+      var map = L.map(el, { scrollWheelZoom: false }).setView([29.383, 71.673], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+      var pts = [
+        { ll: [29.386434, 71.673727], t: 'pilot', name: 'Trust Colony (UC-14)', note: 'GPS stamp: Sanitary Workers Recognition, 13 Aug 2026' },
+        { ll: [29.379885, 71.672358], t: 'pilot', name: 'Muhammadia Colony (UC-14)', note: 'GPS stamp: Community mobilization, 15 Jul 2026' }
+      ];
+      var layer = L.layerGroup().addTo(map);
+      var note = document.createElement('div');
+      note.id = 'map-note';
+      note.className = 'bg-white/95 border border-slate-200 shadow rounded-lg px-3 py-2 text-xs text-slate-600';
+      note.textContent = 'No verified coordinates have been added for this category yet.';
+      el.parentNode.appendChild(note);
+      function draw(filter) {
+        layer.clearLayers();
+        var shown = pts.filter(function (p) { return filter === 'all' || p.t === filter; });
+        shown.forEach(function (p) {
+          L.circleMarker(p.ll, { radius: 10, color: '#fff', weight: 2, fillColor: '#10B981', fillOpacity: 0.95 })
+            .bindPopup('<strong>' + p.name + '</strong><br><span style="font-size:11px">' + p.note + '</span>').addTo(layer);
+        });
+        note.style.display = shown.length ? 'none' : 'block';
+        if (shown.length) map.fitBounds(L.latLngBounds(shown.map(function (p) { return p.ll; })).pad(0.6));
+      }
+      $$('.map-filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          $$('.map-filter-btn').forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('bg-sky-600', on); b.classList.toggle('text-white', on);
+            b.classList.toggle('bg-white', !on); b.classList.toggle('text-slate-700', !on);
+          });
+          draw(btn.dataset.filter);
+        });
+      });
+      draw('all');
+      setTimeout(function () { map.invalidateSize(); }, 300);
+    });
+
+    /* ---------- Gallery: filter, search, lightbox ---------- */
+    safe('gallery', function () {
+      var cards = $$('#gallery-grid .gallery-card'), cat = 'all', q = '';
+      var allBtn = $('.gallery-filter-btn[data-category="all"]');
+      if (allBtn) allBtn.textContent = 'All (' + cards.length + ')';
+      var empty = document.createElement('p');
+      empty.id = 'gallery-empty'; empty.className = 'text-center text-sm text-slate-500 py-10';
+      empty.textContent = 'No photographs match this search.';
+      $('#gallery-grid').after(empty);
+      function apply() {
+        var visible = 0;
+        cards.forEach(function (c) {
+          var cats = (c.dataset.category || '').split(/\s+/);
+          var text = (c.dataset.title + ' ' + c.dataset.caption + ' ' + c.dataset.categoryLabel + ' ' + c.dataset.category).toLowerCase();
+          var show = (cat === 'all' || cats.indexOf(cat) > -1) && (!q || text.indexOf(q) > -1);
+          c.classList.toggle('is-hidden', !show); if (show) visible++;
+        });
+        empty.style.display = visible ? 'none' : 'block';
+      }
+      $$('.gallery-filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          cat = btn.dataset.category;
+          $$('.gallery-filter-btn').forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('bg-sky-600', on); b.classList.toggle('text-white', on); b.classList.toggle('shadow-sm', on);
+            b.classList.toggle('bg-slate-100', !on); b.classList.toggle('text-slate-700', !on);
+          });
+          apply();
+        });
+      });
+      $('#gallery-search').addEventListener('input', function (e) { q = e.target.value.trim().toLowerCase(); apply(); });
+
+      var modal = $('#gallery-lightbox-modal'), img = $('#lightbox-image');
+      function openBox(c) {
+        var thumb = $('img', c);
+        var full = c.dataset.full || rawFromSrc(thumb.getAttribute('src'));
+        img.src = full; img.alt = c.dataset.title || '';
+        $('#lightbox-title').textContent = c.dataset.title || '';
+        $('#lightbox-caption').textContent = c.dataset.caption || '';
+        $('#lightbox-category').textContent = c.dataset.categoryLabel || '';
+        $('#lightbox-download-link').href = full;
+        modal.classList.add('is-open'); document.body.style.overflow = 'hidden';
+      }
+      function closeBox() { modal.classList.remove('is-open'); document.body.style.overflow = ''; img.removeAttribute('src'); }
+      cards.forEach(function (c) { c.addEventListener('click', function () { openBox(c); }); });
+      $('#lightbox-close-btn').addEventListener('click', closeBox);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeBox(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBox(); });
+    });
+
+    /* ---------- Video playlist ---------- */
+    safe('videos', function () {
+      var player = $('#featured-video-player'); if (!player) return;
+      var items = $$('.video-playlist-item');
+      function select(item, autoplay) {
+        items.forEach(function (i) {
+          var on = i === item;
+          i.classList.toggle('is-active', on);
+          i.classList.toggle('border-sky-500', on); i.classList.toggle('bg-sky-50', on);
+          i.classList.toggle('border-slate-200', !on); i.classList.toggle('bg-white', !on);
+        });
+        player.pause();
+        player.removeAttribute('poster');
+        player.innerHTML = '';
+        var s = document.createElement('source'); s.src = item.dataset.src; s.type = 'video/mp4';
+        player.appendChild(s);
+        player.load();
+        if (autoplay) { var p = player.play(); if (p && p.catch) p.catch(function () {}); }
+        $('#current-video-title').textContent = item.dataset.title || '';
+        $('#current-video-desc').textContent = item.dataset.desc || item.dataset.caption || '';
+      }
+      items.forEach(function (item) { item.addEventListener('click', function () { select(item, true); }); });
+    });
+
+    /* ---------- Document library + PDF preview ---------- */
+    safe('documents', function () {
+      var cards = $$('.doc-card'), type = 'all', q = '';
+      function apply() {
+        cards.forEach(function (c) {
+          var show = (type === 'all' || c.dataset.type === type) && (!q || c.textContent.toLowerCase().indexOf(q) > -1);
+          c.style.display = show ? '' : 'none';
+        });
+      }
+      $$('.doc-filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          type = btn.dataset.type;
+          $$('.doc-filter-btn').forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle('bg-sky-600', on); b.classList.toggle('text-white', on);
+            b.classList.toggle('bg-white', !on); b.classList.toggle('text-slate-600', !on); b.classList.toggle('border', !on); b.classList.toggle('border-slate-200', !on);
+          });
+          apply();
+        });
+      });
+      $('#doc-search-input').addEventListener('input', function (e) { q = e.target.value.trim().toLowerCase(); apply(); });
+
+      var modal = $('#pdf-viewer-modal'), frame = $('#pdf-frame');
+      function close() { modal.classList.remove('is-open'); frame.src = 'about:blank'; document.body.style.overflow = ''; }
+      $$('.preview-pdf-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var url = btn.dataset.pdfUrl;
+          // GitHub raw links download instead of displaying, so preview the copy deployed with this site (same repository).
+          var local = url.split('/').pop();
+          frame.src = (location.protocol === 'http:' || location.protocol === 'https:' || location.protocol === 'file:') ? local : url;
+          $('#pdf-modal-title').textContent = btn.dataset.docTitle || 'Document Preview';
+          modal.classList.add('is-open'); document.body.style.overflow = 'hidden';
+        });
+      });
+      $('#pdf-modal-close').addEventListener('click', close);
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    });
+
+    /* ---------- Presentation mode + print ---------- */
+    safe('presentation', function () {
+      var overlay = $('#presentation-overlay'), slides = $$('[data-slide="true"]'), i = 0, on = false;
+      var ind = $('#slide-indicator');
+      function show(n) {
+        i = Math.max(0, Math.min(slides.length - 1, n));
+        slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (ind) ind.textContent = 'Section ' + (i + 1) + ' of ' + slides.length;
+      }
+      function start() { on = true; overlay.classList.remove('hidden'); overlay.classList.add('flex'); show(0); }
+      function stop() { on = false; overlay.classList.add('hidden'); overlay.classList.remove('flex'); }
+      $('#presentation-mode-btn').addEventListener('click', start);
+      $('#exit-presentation-btn').addEventListener('click', stop);
+      $('#slide-next-btn').addEventListener('click', function () { stop(); show(i + 1); });
+      $('#slide-prev-btn').addEventListener('click', function () { stop(); show(i - 1); });
+      document.addEventListener('keydown', function (e) {
+        if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+        if (!on && !document.body.dataset.presenting) return;
+        if (e.key === 'ArrowRight') show(i + 1);
+        if (e.key === 'ArrowLeft') show(i - 1);
+      });
+      $('#slide-next-btn').addEventListener('click', function () { document.body.dataset.presenting = '1'; });
+      $('#export-briefing-btn').addEventListener('click', function () { window.print(); });
+    });
+  })();
+
+  </script>
 
 </body>
 </html>
